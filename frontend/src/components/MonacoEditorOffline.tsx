@@ -13,6 +13,7 @@ import {
   Cpu,
   Clock,
   Terminal,
+  X,
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
@@ -33,6 +34,10 @@ export const MonacoEditorOffline: React.FC = () => {
   const tokensGenerated = useAppStore((state) => state.tokensGenerated);
   const activeModel = useAppStore((state) => state.activeModel);
   const settings = useAppStore((state) => state.settings);
+  const errorMessage = useAppStore((state) => state.errorMessage);
+  const errorActionLabel = useAppStore((state) => state.errorActionLabel);
+  const setErrorMessage = useAppStore((state) => state.setErrorMessage);
+  const setActiveTab = useAppStore((state) => state.setActiveTab);
 
   const saveCurrentSnippet = useAppStore((state) => state.saveCurrentSnippet);
   const generateCodeStream = useAppStore((state) => state.generateCodeStream);
@@ -219,6 +224,38 @@ export const MonacoEditorOffline: React.FC = () => {
         </div>
       </div>
 
+      {/* User-visible Error Banner */}
+      {errorMessage && (
+        <div className="bg-rose-950/90 border-b border-rose-800/80 px-4 py-2.5 flex items-center justify-between text-xs text-rose-200">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <span className="font-medium">{errorMessage}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {errorActionLabel && (
+              <button
+                onClick={() => {
+                  if (errorActionLabel === 'Open Models Tab') {
+                    setActiveTab('models');
+                    window.location.hash = 'models';
+                  }
+                }}
+                className="px-2.5 py-1 bg-rose-800 hover:bg-rose-700 text-white rounded text-[11px] font-semibold transition shadow-sm"
+              >
+                {errorActionLabel}
+              </button>
+            )}
+            <button
+              onClick={() => setErrorMessage(null)}
+              className="p-1 hover:text-white rounded"
+              title="Dismiss error"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Generation Status Banner */}
       {isGenerating && (
         <div className="bg-indigo-950/70 border-b border-indigo-800/40 px-4 py-1.5 flex items-center justify-between text-xs text-indigo-300 animate-pulse">
@@ -308,3 +345,4 @@ export const MonacoEditorOffline: React.FC = () => {
     </div>
   );
 };
+

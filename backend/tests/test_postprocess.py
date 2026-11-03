@@ -47,3 +47,4 @@ def test_extract_code_block_unwrapped_code():
     assert found is False
     assert "def hello_world():" in code
     assert "Here is the function:" not in code
+

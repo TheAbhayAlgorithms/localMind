@@ -55,3 +55,4 @@ networks:
     driver: bridge
     # internal: true blocks outbound Internet gateway egress for all containers
     internal: true
+

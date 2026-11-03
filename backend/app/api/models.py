@@ -92,3 +92,4 @@ async def switch_model(req: SwitchModelRequest):
     """Switch the current active local model."""
     settings.default_model = req.model.strip()
     return {"status": "ok", "active_model": settings.default_model}
+

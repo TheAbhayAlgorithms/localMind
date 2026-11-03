@@ -60,3 +60,4 @@ def test_system_settings_roundtrip():
     assert data["temperature"] == 0.25
     assert data["default_language"] == "TypeScript"
     assert data["allow_code_execution"] is True
+

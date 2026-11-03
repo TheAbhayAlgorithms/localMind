@@ -17,6 +17,9 @@ class OllamaNotRunningError(LLMRuntimeError):
 class ModelNotFoundError(LLMRuntimeError):
     pass
 
+class OutOfMemoryError(LLMRuntimeError):
+    pass
+
 
 def build_system_prompt(language: str = "Auto") -> str:
     """Generate strict code-only system prompt."""
@@ -161,22 +164,36 @@ class LLMService:
 
             url = f"{self.ollama_base_url}/api/generate"
             try:
-                async with httpx.AsyncClient(timeout=httpx.Timeout(120.0, connect=5.0)) as client:
+                # 300s read timeout, 30s connect timeout for cold starts on CPU
+                async with httpx.AsyncClient(timeout=httpx.Timeout(300.0, connect=30.0)) as client:
                     async with client.stream("POST", url, json=payload) as resp:
                         if resp.status_code == 404:
+                            installed = await self.list_local_models()
+                            inst_names = [m["name"] for m in installed]
+                            hint = f" Available models: {inst_names}." if inst_names else " No models currently installed."
                             raise ModelNotFoundError(
-                                f"Model '{active_model}' is not installed in Ollama. "
-                                f"Please run 'bash scripts/download_models.sh' while connected to pre-download models."
+                                f"Model '{active_model}' is not installed in Ollama.{hint} "
+                                f"Please run 'bash scripts/download_models.sh' or select an installed model in the Models tab."
                             )
                         if resp.status_code != 200:
-                            err_body = await resp.aread()
-                            raise LLMRuntimeError(f"Ollama error {resp.status_code}: {err_body.decode('utf-8')}")
+                            err_body = (await resp.aread()).decode('utf-8', errors='replace')
+                            if "out of memory" in err_body.lower() or "memory" in err_body.lower():
+                                raise OutOfMemoryError(
+                                    f"Out of memory loading model '{active_model}'. "
+                                    f"Please switch to a lighter quantized model (e.g. gemma:2b) in Settings/Models."
+                                )
+                            raise LLMRuntimeError(f"Ollama error {resp.status_code}: {err_body}")
 
                         async for line in resp.aiter_lines():
                             if not line:
                                 continue
                             try:
                                 chunk = json.loads(line)
+                                if "error" in chunk:
+                                    err_text = chunk["error"]
+                                    if "out of memory" in err_text.lower():
+                                        raise OutOfMemoryError(f"Out of memory: {err_text}")
+                                    raise LLMRuntimeError(err_text)
                                 token = chunk.get("response", "")
                                 if token:
                                     yield token
@@ -184,11 +201,14 @@ class LLMService:
                                 pass
             except httpx.ConnectError:
                 raise OllamaNotRunningError(
-                    f"Could not connect to Ollama on {self.ollama_base_url}. "
-                    "Make sure Ollama is running locally: 'ollama serve'."
+                    f"Ollama is not running on {self.ollama_base_url}. "
+                    "Make sure Ollama is running locally: run 'ollama serve' in terminal."
                 )
-            except httpx.ReadTimeout:
-                raise LLMRuntimeError("Local model generation timed out.")
+            except httpx.TimeoutException:
+                raise LLMRuntimeError(
+                    f"Inference timed out while waiting for '{active_model}'. "
+                    "The model may be loading into memory. Please try again."
+                )
         else:
             # Fallback llama.cpp / openai compatible completion endpoint
             payload = {
@@ -307,3 +327,4 @@ class LLMService:
         }
 
 llm_service = LLMService()
+

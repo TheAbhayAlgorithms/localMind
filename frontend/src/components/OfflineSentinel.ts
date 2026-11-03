@@ -59,3 +59,4 @@ export function initOfflineSentinel() {
 
   console.log('🛡️ [OfflineCoder] Network sentinel active: Outbound external egress blocked.');
 }
+

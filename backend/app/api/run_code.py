@@ -28,3 +28,4 @@ async def execute_code(req: CodeRunRequest):
         allow_execution=settings.allow_code_execution,
     )
     return CodeRunResponse(**result)
+

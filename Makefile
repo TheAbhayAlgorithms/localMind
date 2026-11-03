@@ -1,4 +1,4 @@
-.PHONY: help install dev backend frontend test build download-models clean
+.PHONY: help install dev backend frontend test build download-models doctor clean
 
 help:
 	@echo "OfflineCoder Makefile targets:"
@@ -9,6 +9,7 @@ help:
 	@echo "  make test            Run backend test suite with pytest"
 	@echo "  make build           Build frontend PWA bundle"
 	@echo "  make download-models Run one-time model pre-download helper"
+	@echo "  make doctor          Run full environment and offline diagnostics"
 
 install:
 	cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
@@ -36,5 +37,9 @@ build:
 download-models:
 	bash scripts/download_models.sh
 
+doctor:
+	bash scripts/doctor.sh
+
 clean:
 	rm -rf backend/.pytest_cache backend/__pycache__ frontend/dist
+

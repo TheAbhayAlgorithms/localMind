@@ -76,3 +76,4 @@ async def test_e2e_auto_retry_on_syntax_error():
         assert data["is_syntax_valid"] is True
         assert data["retry_count"] == 1
         assert "def broken_func():" in data["code"]
+

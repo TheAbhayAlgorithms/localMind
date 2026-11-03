@@ -68,13 +68,16 @@ interface AppState {
   prompt: string;
   setPrompt: (p: string) => void;
 
-  // Code Output & Streaming
+  // Generation & Output State
   code: string;
   setCode: (c: string) => void;
   isGenerating: boolean;
   setIsGenerating: (v: boolean) => void;
   generationStatus: string;
   setGenerationStatus: (s: string) => void;
+  errorMessage: string | null;
+  errorActionLabel: string | null;
+  setErrorMessage: (msg: string | null, actionLabel?: string | null) => void;
   detectedLanguage: string;
   fileExtension: string;
   isSyntaxValid: boolean;
@@ -149,6 +152,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   setIsGenerating: (isGenerating) => set({ isGenerating }),
   generationStatus: '',
   setGenerationStatus: (generationStatus) => set({ generationStatus }),
+  errorMessage: null,
+  errorActionLabel: null,
+  setErrorMessage: (errorMessage, errorActionLabel = null) => set({ errorMessage, errorActionLabel }),
   detectedLanguage: 'python',
   fileExtension: 'py',
   isSyntaxValid: true,
@@ -270,6 +276,17 @@ export const useAppStore = create<AppState>((set, get) => ({
       if (res.ok) {
         const items = await res.json();
         set({ history: items });
+        if (!get().code && items.length > 0) {
+          const latest = items[0];
+          set({
+            code: latest.code,
+            prompt: latest.prompt,
+            detectedLanguage: latest.detected_language || 'python',
+            isSyntaxValid: latest.is_syntax_valid,
+            tokensGenerated: latest.tokens_generated,
+            durationMs: latest.duration_ms,
+          });
+        }
       }
     } catch (_) {}
   },
@@ -349,6 +366,8 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({
       isGenerating: true,
       generationStatus: 'Connecting to local Gemma...',
+      errorMessage: null,
+      errorActionLabel: null,
       code: '',
       isSyntaxValid: true,
       syntaxError: null,
@@ -357,6 +376,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       isConsoleOpen: false,
       runResult: null,
     });
+
+    let wsHandled = false;
 
     try {
       // Connect to WebSocket on localhost:8000/api/generate/ws
@@ -386,6 +407,7 @@ export const useAppStore = create<AppState>((set, get) => ({
           } else if (msg.type === 'status') {
             set({ generationStatus: msg.message });
           } else if (msg.type === 'done') {
+            wsHandled = true;
             set({
               code: msg.code,
               detectedLanguage: msg.language,
@@ -397,14 +419,18 @@ export const useAppStore = create<AppState>((set, get) => ({
               tokensGenerated: msg.tokens_generated,
               isGenerating: false,
               generationStatus: 'Done',
+              errorMessage: null,
             });
             get().fetchHistory();
             ws.close();
           } else if (msg.type === 'error') {
+            wsHandled = true;
+            const action = msg.code === 'MODEL_NOT_FOUND' ? 'Open Models Tab' : null;
             set({
               isGenerating: false,
+              errorMessage: msg.message,
+              errorActionLabel: action,
               generationStatus: `Error: ${msg.message}`,
-              code: `// OfflineCoder Generation Error\n// ${msg.message}\n// Ensure local Ollama is running: ollama serve`,
             });
             ws.close();
           }
@@ -412,7 +438,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       };
 
       ws.onerror = async () => {
-        // Fallback to HTTP POST if WebSocket connection fails
+        if (wsHandled) return;
+        wsHandled = true;
         set({ generationStatus: 'WebSocket unavailable, falling back to HTTP stream...' });
         try {
           const res = await fetch('/api/generate', {
@@ -446,28 +473,37 @@ export const useAppStore = create<AppState>((set, get) => ({
             tokensGenerated: data.tokens_generated,
             isGenerating: false,
             generationStatus: 'Done',
+            errorMessage: null,
           });
           get().fetchHistory();
         } catch (err: any) {
           if (err.name !== 'AbortError') {
+            const action = err.message.includes('not installed') ? 'Open Models Tab' : null;
             set({
               isGenerating: false,
+              errorMessage: err.message,
+              errorActionLabel: action,
               generationStatus: `Error: ${err.message}`,
-              code: `// OfflineCoder Error: ${err.message}`,
             });
           }
         }
       };
 
       ws.onclose = () => {
-        if (get().isGenerating) {
-          set({ isGenerating: false });
+        if (!wsHandled && get().isGenerating) {
+          // If connection closed without tokens/done/error, trigger fallback or end gracefully
+          setTimeout(() => {
+            if (!wsHandled && get().isGenerating) {
+              set({ isGenerating: false });
+            }
+          }, 300);
         }
       };
 
     } catch (e: any) {
       set({
         isGenerating: false,
+        errorMessage: e.message,
         generationStatus: `Error: ${e.message}`,
       });
     }

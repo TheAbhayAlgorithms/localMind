@@ -49,3 +49,4 @@ function test() {
     is_valid, err = validate_syntax(code, "javascript")
     assert is_valid is False
     assert err is not None
+

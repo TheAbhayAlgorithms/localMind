@@ -42,3 +42,4 @@ echo "========================================================"
 echo "Done! You can now disconnect Wi-Fi / turn off network."
 echo "Start the platform using: make dev   or   docker compose up"
 echo "========================================================"
+

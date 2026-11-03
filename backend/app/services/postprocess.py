@@ -143,3 +143,4 @@ def extract_code_block(
 
     final_lang = requested_language if requested_language.lower() != "auto" else detect_language_with_pygments(cleaned)
     return cleaned, normalize_language(final_lang), False
+

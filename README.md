@@ -150,3 +150,4 @@ All 15 tests execute and pass in under 0.25 seconds without external network acc
 ## 🛡️ License
 
 MIT. Built for privacy, resilience, and offline productivity.
+

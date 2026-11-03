@@ -91,3 +91,4 @@ def update_settings(payload: SettingsUpdate, db: Session = Depends(get_db)):
     db.commit()
 
     return {"status": "ok", "settings": updates}
+

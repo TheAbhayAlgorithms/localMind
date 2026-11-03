@@ -42,3 +42,4 @@ export const LanguageSelect: React.FC = () => {
     </div>
   );
 };
+

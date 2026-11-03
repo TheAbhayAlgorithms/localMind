@@ -1,6 +1,9 @@
 import ast
 import re
+import logging
 from typing import Tuple, Optional, List
+
+logger = logging.getLogger("offlinecoder.validator")
 
 # Try importing tree-sitter bindings
 _TS_AVAILABLE = False
@@ -74,65 +77,72 @@ def _check_balanced_delimiters(code: str) -> Optional[str]:
 def validate_syntax(code: str, language: str) -> Tuple[bool, Optional[str]]:
     """
     Validate code syntax offline using tree-sitter and AST parsers.
+    Guaranteed to fail open: returns (True, None) or code with warning rather than crashing request.
     Returns:
         (is_valid, error_message_or_None)
     """
     if not code or not code.strip():
-        return False, "Empty code received."
-
-    lang = (language or "").strip().lower()
-
-    # 1. Python validation
-    if lang in ("python", "py"):
-        # AST parse check (fast, highly descriptive error messages)
-        try:
-            ast.parse(code)
-        except SyntaxError as e:
-            return False, f"Python SyntaxError at line {e.lineno}: {e.msg}"
-
-        # Tree-sitter double-check if available
-        if _PY_PARSER:
-            try:
-                tree = _PY_PARSER.parse(code.encode("utf-8"))
-                if tree.root_node.has_error:
-                    err = _find_tree_sitter_error(tree.root_node)
-                    return False, err or "Python syntax error detected in AST."
-            except Exception:
-                pass
-
         return True, None
 
-    # 2. JavaScript / TypeScript validation
-    if lang in ("javascript", "js", "typescript", "ts"):
-        if _JS_PARSER:
-            try:
-                tree = _JS_PARSER.parse(code.encode("utf-8"))
-                if tree.root_node.has_error:
-                    err = _find_tree_sitter_error(tree.root_node)
-                    return False, err or "JavaScript/TypeScript syntax error detected."
-            except Exception:
-                pass
+    try:
+        lang = (language or "").strip().lower()
 
-        # Also verify balanced brackets as fallback
+        # 1. Python validation
+        if lang in ("python", "py"):
+            # AST parse check (fast, highly descriptive error messages)
+            try:
+                ast.parse(code)
+            except SyntaxError as e:
+                return False, f"Python SyntaxError at line {e.lineno}: {e.msg}"
+
+            # Tree-sitter double-check if available
+            if _PY_PARSER:
+                try:
+                    tree = _PY_PARSER.parse(code.encode("utf-8"))
+                    if tree.root_node.has_error:
+                        err = _find_tree_sitter_error(tree.root_node)
+                        return False, err or "Python syntax error detected in AST."
+                except Exception:
+                    pass
+
+            return True, None
+
+        # 2. JavaScript / TypeScript validation
+        if lang in ("javascript", "js", "typescript", "ts"):
+            if _JS_PARSER:
+                try:
+                    tree = _JS_PARSER.parse(code.encode("utf-8"))
+                    if tree.root_node.has_error:
+                        err = _find_tree_sitter_error(tree.root_node)
+                        return False, err or "JavaScript/TypeScript syntax error detected."
+                except Exception:
+                    pass
+
+            # Also verify balanced brackets as fallback
+            delim_err = _check_balanced_delimiters(code)
+            if delim_err:
+                return False, delim_err
+
+            return True, None
+
+        # 3. JSON validation
+        if lang == "json":
+            import json
+            try:
+                json.loads(code)
+                return True, None
+            except Exception as e:
+                return False, f"Invalid JSON: {str(e)}"
+
+        # 4. General languages (C, C++, Go, Rust, Java, etc.)
+        # Check for basic delimiter balance and unclosed blocks
         delim_err = _check_balanced_delimiters(code)
         if delim_err:
             return False, delim_err
 
         return True, None
 
-    # 3. JSON validation
-    if lang == "json":
-        import json
-        try:
-            json.loads(code)
-            return True, None
-        except Exception as e:
-            return False, f"Invalid JSON: {str(e)}"
+    except Exception as e:
+        logger.warning(f"Offline syntax validator error: {e}. Failing open.")
+        return True, None
 
-    # 4. General languages (C, C++, Go, Rust, Java, etc.)
-    # Check for basic delimiter balance and unclosed blocks
-    delim_err = _check_balanced_delimiters(code)
-    if delim_err:
-        return False, delim_err
-
-    return True, None

@@ -1,6 +1,8 @@
 from pathlib import Path
+import json
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Literal
+from pydantic import field_validator
+from typing import Literal, Union, List
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -35,7 +37,20 @@ class Settings(BaseSettings):
     
     # Offline strict enforcement
     offline_strict_mode: bool = True
-    allowed_hosts: list[str] = ["localhost", "127.0.0.1", "0.0.0.0", "backend", "frontend", "ollama"]
+    allowed_hosts: Union[List[str], str] = ["localhost", "127.0.0.1", "0.0.0.0", "backend", "frontend", "ollama"]
+
+    @field_validator("allowed_hosts")
+    @classmethod
+    def parse_allowed_hosts(cls, v: Union[str, List[str]]) -> List[str]:
+        if isinstance(v, str):
+            clean = v.strip()
+            if clean.startswith("[") and clean.endswith("]"):
+                try:
+                    return json.loads(clean)
+                except Exception:
+                    pass
+            return [h.strip() for h in clean.split(",") if h.strip()]
+        return v
     
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -44,3 +59,4 @@ class Settings(BaseSettings):
     )
 
 settings = Settings()
+

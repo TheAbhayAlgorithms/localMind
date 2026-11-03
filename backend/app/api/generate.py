@@ -8,7 +8,13 @@ from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.db.models import GenerationHistory, UserSetting
-from app.services.llm import llm_service, LLMRuntimeError, OllamaNotRunningError, ModelNotFoundError
+from app.services.llm import (
+    llm_service,
+    LLMRuntimeError,
+    OllamaNotRunningError,
+    ModelNotFoundError,
+    OutOfMemoryError,
+)
 from app.services.postprocess import extract_code_block, get_file_extension
 from app.config import settings
 
@@ -85,6 +91,8 @@ async def generate_code(req: GenerateRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=503, detail=str(e))
     except ModelNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except OutOfMemoryError as e:
+        raise HTTPException(status_code=507, detail=str(e))
     except LLMRuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
@@ -160,6 +168,8 @@ async def generate_websocket(websocket: WebSocket, db: Session = Depends(get_db)
                 await websocket.send_json({"type": "error", "message": str(e), "code": "OLLAMA_OFFLINE"})
             except ModelNotFoundError as e:
                 await websocket.send_json({"type": "error", "message": str(e), "code": "MODEL_NOT_FOUND"})
+            except OutOfMemoryError as e:
+                await websocket.send_json({"type": "error", "message": str(e), "code": "OOM_ERROR"})
             except Exception as e:
                 await websocket.send_json({"type": "error", "message": str(e), "code": "RUNTIME_ERROR"})
 
@@ -219,3 +229,4 @@ async def generate_sse_stream(req: GenerateRequest, db: Session = Depends(get_db
             yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+
