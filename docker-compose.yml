@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Local Ollama service serving Gemma weights from local volume
+  ollama:
+    image: ollama/ollama:latest
+    container_name: offlinecoder_ollama
+    restart: unless-stopped
+    volumes:
+      - ./models:/root/.ollama/models
+    ports:
+      - "127.0.0.1:11434:11434"
+    networks:
+      - offline_net
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0:11434
+
+  # FastAPI Backend (Python 3.11+, tree-sitter, SQLite)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: offlinecoder_backend
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend,frontend,ollama
+      - OFFLINE_STRICT_MODE=true
+    volumes:
+      - ./backend/data:/app/data
+    networks:
+      - offline_net
+
+  # React + Vite PWA Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: offlinecoder_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:5173:80"
+    networks:
+      - offline_net
+
+networks:
+  offline_net:
+    driver: bridge
+    # internal: true blocks outbound Internet gateway egress for all containers
+    internal: true
