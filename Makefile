@@ -18,12 +18,12 @@ install:
 dev:
 	@echo "Starting OfflineCoder (Backend on :8000, Frontend on :5173)..."
 	trap 'kill 0' EXIT; \
-	(cd backend && .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload) & \
-	(cd frontend && npm run dev) & \
+	(cd backend && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload) & \
+	(cd frontend && npm run dev -- --host 0.0.0.0) & \
 	wait
 
 backend:
-	cd backend && .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+	cd backend && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 frontend:
 	cd frontend && npm run dev

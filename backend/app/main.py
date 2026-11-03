@@ -43,10 +43,10 @@ app = FastAPI(
     redoc_url=None,
 )
 
-# CORS restricted to localhost/loopback
+# CORS restricted to localhost/loopback and private networks (LAN, Tailscale)
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+|100\.\d+\.\d+\.\d+|.*\.ts\.net)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,10 +56,10 @@ app.add_middleware(
 @app.middleware("http")
 async def security_headers_middleware(request: Request, call_next):
     response = await call_next(request)
-    # Enforce strict Content-Security-Policy
+    # Enforce strict Content-Security-Policy (allows local, LAN, and Tailscale WebSockets)
     csp = (
         "default-src 'self'; "
-        "connect-src 'self' http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:*; "
+        "connect-src 'self' ws: wss: http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:*; "
         "font-src 'self' data:; "
         "img-src 'self' data: blob:; "
         "script-src 'self' 'unsafe-eval' 'unsafe-inline'; "

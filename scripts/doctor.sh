@@ -122,10 +122,19 @@ echo ""
 echo -e "${COLOR_BLUE}3. Ports & Network Integrity:${COLOR_RESET}"
 
 # 6. Check Port 8000 (Backend)
-if curl -s -m 1 http://localhost:8000/api/health >/dev/null 2>&1; then
-    pass "Backend API is currently running on http://localhost:8000."
+BACKEND_HEALTH=$(curl -s -m 2 http://127.0.0.1:8000/api/health 2>/dev/null || echo "")
+if echo "$BACKEND_HEALTH" | grep -q "online_offline"; then
+    pass "Backend API is currently running on http://127.0.0.1:8000."
 else
-    pass "Port 8000 is ready for backend server startup."
+    # Check if port 8000 is occupied by something else
+    PORT_8000_OCCUPIED=$(lsof -i :8000 2>/dev/null | grep -v "COMMAND" | head -n 1 || echo "")
+    if [ -n "$PORT_8000_OCCUPIED" ]; then
+        PROC_NAME=$(echo "$PORT_8000_OCCUPIED" | awk '{print $1}')
+        PROC_PID=$(echo "$PORT_8000_OCCUPIED" | awk '{print $2}')
+        fail "Port 8000 is occupied by '$PROC_NAME' (PID $PROC_PID) which is not OfflineCoder." "Kill the conflicting process: kill -9 $PROC_PID"
+    else
+        pass "Port 8000 is free and ready for backend server startup."
+    fi
 fi
 
 # 7. Check Port 5173 (Frontend)

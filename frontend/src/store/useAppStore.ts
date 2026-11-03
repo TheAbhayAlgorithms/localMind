@@ -484,12 +484,12 @@ export const useAppStore = create<AppState>((set, get) => ({
             signal: controller.signal,
           });
 
-          if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.detail || 'Generation failed');
+          const parsed = await parseResponseSafely<any>(res);
+          if (!parsed.ok || !parsed.data) {
+            throw new Error(parsed.error || 'Generation failed');
           }
 
-          const data = await res.json();
+          const data = parsed.data;
           set({
             code: data.code,
             detectedLanguage: data.language,
@@ -565,16 +565,15 @@ export const useAppStore = create<AppState>((set, get) => ({
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        set({ runResult: data, isRunningCode: false });
+      const parsed = await parseResponseSafely<any>(res);
+      if (parsed.ok && parsed.data) {
+        set({ runResult: parsed.data, isRunningCode: false });
       } else {
-        const err = await res.json();
         set({
           runResult: {
             status: 'error',
             stdout: '',
-            stderr: err.detail || 'Execution request failed',
+            stderr: parsed.error || 'Execution request failed',
             exit_code: -1,
             duration_ms: 0,
           },
