@@ -59,7 +59,7 @@ async def security_headers_middleware(request: Request, call_next):
     # Enforce strict Content-Security-Policy (allows local, LAN, and Tailscale WebSockets)
     csp = (
         "default-src 'self'; "
-        "connect-src 'self' ws: wss: http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:*; "
+        "connect-src 'self' http://localhost:* ws://localhost:* http://127.0.0.1:* ws://127.0.0.1:* ws: wss:; "
         "font-src 'self' data:; "
         "img-src 'self' data: blob:; "
         "script-src 'self' 'unsafe-eval' 'unsafe-inline'; "
