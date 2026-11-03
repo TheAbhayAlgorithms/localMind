@@ -49,6 +49,33 @@ export interface SystemSettings {
   allow_code_execution: boolean;
 }
 
+async function parseResponseSafely<T = any>(res: Response): Promise<{ ok: boolean; data?: T; error?: string }> {
+  try {
+    const text = await res.text();
+    if (!text) {
+      return { ok: false, error: `Empty response (HTTP ${res.status})` };
+    }
+    try {
+      const data = JSON.parse(text);
+      if (res.ok) {
+        return { ok: true, data };
+      } else {
+        return { ok: false, error: data.detail || data.message || `HTTP error ${res.status}` };
+      }
+    } catch {
+      if (text.includes('<!doctype') || text.includes('<html')) {
+        return {
+          ok: false,
+          error: `Backend error (${res.status}): Server returned HTML instead of JSON. Ensure OfflineCoder backend is running on http://127.0.0.1:8000 without port conflicts.`,
+        };
+      }
+      return { ok: false, error: text.slice(0, 150) || `HTTP error ${res.status}` };
+    }
+  } catch (err: any) {
+    return { ok: false, error: err.message || 'Network error' };
+  }
+}
+
 export interface RunResult {
   status: string;
   stdout: string;
@@ -216,9 +243,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     try {
       // Fetch system settings
       const setRes = await fetch('/api/system/settings');
-      if (setRes.ok) {
-        const data = await setRes.json();
-        set({ settings: data, selectedLanguage: data.default_language || 'Auto' });
+      const parsed = await parseResponseSafely<SystemSettings>(setRes);
+      if (parsed.ok && parsed.data) {
+        set({ settings: parsed.data, selectedLanguage: parsed.data.default_language || 'Auto' });
       }
     } catch (_) {}
 
@@ -228,11 +255,11 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     try {
       const resRes = await fetch('/api/system/resources');
-      if (resRes.ok) {
-        const data = await resRes.json();
+      const parsed = await parseResponseSafely<any>(resRes);
+      if (parsed.ok && parsed.data) {
         set({
-          cpuPercent: data.cpu_percent,
-          runtimeHealth: data.runtime_health,
+          cpuPercent: parsed.data.cpu_percent,
+          runtimeHealth: parsed.data.runtime_health,
         });
       }
     } catch (_) {}
@@ -241,14 +268,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   fetchModels: async () => {
     try {
       const res = await fetch('/api/models');
-      if (res.ok) {
-        const data = await res.json();
+      const parsed = await parseResponseSafely<any>(res);
+      if (parsed.ok && parsed.data) {
         set({
-          activeModel: data.active_model,
-          models: data.models,
-          systemRamTotal: data.system_ram_total_gb,
-          systemRamAvailable: data.system_ram_available_gb,
-          systemRamPercent: data.system_ram_percent_used,
+          activeModel: parsed.data.active_model,
+          models: parsed.data.models,
+          systemRamTotal: parsed.data.system_ram_total_gb,
+          systemRamAvailable: parsed.data.system_ram_available_gb,
+          systemRamPercent: parsed.data.system_ram_percent_used,
         });
       }
     } catch (_) {}
@@ -273,8 +300,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       const q = get().historySearch.trim();
       const url = q ? `/api/history?q=${encodeURIComponent(q)}` : '/api/history';
       const res = await fetch(url);
-      if (res.ok) {
-        const items = await res.json();
+      const parsed = await parseResponseSafely<HistoryEntry[]>(res);
+      if (parsed.ok && parsed.data && Array.isArray(parsed.data)) {
+        const items = parsed.data;
         set({ history: items });
         if (!get().code && items.length > 0) {
           const latest = items[0];
@@ -310,9 +338,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       const q = get().snippetSearch.trim();
       const url = q ? `/api/snippets?q=${encodeURIComponent(q)}` : '/api/snippets';
       const res = await fetch(url);
-      if (res.ok) {
-        const items = await res.json();
-        set({ snippets: items });
+      const parsed = await parseResponseSafely<SnippetEntry[]>(res);
+      if (parsed.ok && parsed.data && Array.isArray(parsed.data)) {
+        set({ snippets: parsed.data });
       }
     } catch (_) {}
   },
