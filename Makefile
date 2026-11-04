@@ -1,16 +1,22 @@
-.PHONY: help install dev backend frontend test build download-models doctor clean stop
+.PHONY: help install dev start stop backend frontend test build download-models doctor clean
 
 help:
 	@echo "OfflineCoder Makefile targets:"
-	@echo "  make install         Install backend and frontend dependencies"
+	@echo "  make start           One-command start (Ollama + Backend + opens browser)"
+	@echo "  make stop            Stop all processes & free 100% RAM/VRAM"
 	@echo "  make dev             Run backend and frontend dev servers concurrently"
 	@echo "  make backend         Run FastAPI backend server (http://localhost:8000)"
 	@echo "  make frontend        Run Vite frontend server (http://localhost:5173)"
-	@echo "  make stop            Stop all running OfflineCoder and Ollama processes"
 	@echo "  make test            Run backend test suite with pytest"
 	@echo "  make build           Build frontend PWA bundle"
 	@echo "  make download-models Run one-time model pre-download helper"
 	@echo "  make doctor          Run full environment and offline diagnostics"
+
+start:
+	bash start.sh
+
+stop:
+	bash stop.sh
 
 install:
 	cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
@@ -40,13 +46,6 @@ download-models:
 
 doctor:
 	bash scripts/doctor.sh
-
-stop:
-	@echo "Stopping OfflineCoder backend, frontend, and Ollama..."
-	@-lsof -ti :8000 | xargs kill -9 2>/dev/null || true
-	@-lsof -ti :5173 | xargs kill -9 2>/dev/null || true
-	@-lsof -ti :11434 | xargs kill -9 2>/dev/null || true
-	@echo "All OfflineCoder processes stopped."
 
 clean:
 	rm -rf backend/.pytest_cache backend/__pycache__ frontend/dist
