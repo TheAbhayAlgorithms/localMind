@@ -8,23 +8,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkBg: '#090d16',
-        panelBg: '#0f172a',
-        cardBg: '#1e293b',
-        borderCol: '#334155',
+        darkBg: '#000000',
+        panelBg: '#0c0c0c',
+        cardBg: '#141414',
+        borderCol: '#262626',
         brand: {
-          50: '#eef2ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
+          50: '#f5f5f5',
+          100: '#e5e5e5',
+          200: '#cccccc',
+          500: '#ffffff',
+          600: '#d4d4d4',
+          700: '#a3a3a3',
         }
       },
       fontFamily: {
         sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        mono: ['"Courier New"', 'Courier', 'ui-monospace', 'monospace'],
+        code: ['"Courier New"', 'Courier', 'monospace'],
+        typing: ['"Anthropic Serif"', 'Tiempos Text', '"Iowan Old Style"', '"Apple Garamond"', 'Baskerville', '"Times New Roman"', 'Georgia', 'serif'],
+        serif: ['"Anthropic Serif"', 'Tiempos Text', '"Iowan Old Style"', '"Apple Garamond"', 'Baskerville', '"Times New Roman"', 'Georgia', 'serif'],
       }
     },
   },
   plugins: [],
 }
+
 
