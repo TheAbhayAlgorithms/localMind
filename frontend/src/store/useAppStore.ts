@@ -66,7 +66,7 @@ async function parseResponseSafely<T = any>(res: Response): Promise<{ ok: boolea
       if (text.includes('<!doctype') || text.includes('<html')) {
         return {
           ok: false,
-          error: `Backend error (${res.status}): Server returned HTML instead of JSON. Ensure OfflineCoder backend is running on http://127.0.0.1:8000 without port conflicts.`,
+          error: `Backend error (${res.status}): Server returned HTML instead of JSON. Ensure localMind backend is running on http://127.0.0.1:8000 without port conflicts.`,
         };
       }
       return { ok: false, error: text.slice(0, 150) || `HTTP error ${res.status}` };

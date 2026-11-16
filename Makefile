@@ -1,7 +1,7 @@
 .PHONY: help install dev start stop backend frontend test build download-models doctor clean
 
 help:
-	@echo "OfflineCoder Makefile targets:"
+	@echo "localMind Makefile targets:"
 	@echo "  make start           One-command start (Ollama + Backend + opens browser)"
 	@echo "  make stop            Stop all processes & free 100% RAM/VRAM"
 	@echo "  make dev             Run backend and frontend dev servers concurrently"
@@ -23,7 +23,7 @@ install:
 	cd frontend && npm install
 
 dev:
-	@echo "Starting OfflineCoder (Backend on :8000, Frontend on :5173)..."
+	@echo "Starting localMind (Backend on :8000, Frontend on :5173)..."
 	trap 'kill 0' EXIT; \
 	(cd backend && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload) & \
 	(cd frontend && npm run dev -- --host 0.0.0.0) & \

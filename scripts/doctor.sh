@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ==============================================================================
-# OfflineCoder Health & Diagnostics Doctor (scripts/doctor.sh)
+# localMind Health & Diagnostics Doctor (scripts/doctor.sh)
 # ==============================================================================
 
 COLOR_RESET="\033[0m"
@@ -12,7 +12,7 @@ COLOR_BLUE="\033[1;34m"
 COLOR_CYAN="\033[1;36m"
 
 echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
-echo -e "${COLOR_CYAN}         OfflineCoder Environment Diagnostics         ${COLOR_RESET}"
+echo -e "${COLOR_CYAN}           localMind Environment Diagnostics          ${COLOR_RESET}"
 echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
 echo ""
 
@@ -131,7 +131,7 @@ else
     if [ -n "$PORT_8000_OCCUPIED" ]; then
         PROC_NAME=$(echo "$PORT_8000_OCCUPIED" | awk '{print $1}')
         PROC_PID=$(echo "$PORT_8000_OCCUPIED" | awk '{print $2}')
-        fail "Port 8000 is occupied by '$PROC_NAME' (PID $PROC_PID) which is not OfflineCoder." "Kill the conflicting process: kill -9 $PROC_PID"
+        fail "Port 8000 is occupied by '$PROC_NAME' (PID $PROC_PID) which is not localMind." "Kill the conflicting process: kill -9 $PROC_PID"
     else
         pass "Port 8000 is free and ready for backend server startup."
     fi

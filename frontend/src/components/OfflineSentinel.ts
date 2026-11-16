@@ -31,9 +31,9 @@ export function initOfflineSentinel() {
     const url = typeof input === 'string' ? input : (input instanceof Request ? input.url : input.toString());
     
     if (!isAllowedHost(url)) {
-      console.error(`[OfflineCoder SECURITY VIOLATION] Outbound request blocked: ${url}`);
+      console.error(`[localMind SECURITY VIOLATION] Outbound request blocked: ${url}`);
       useAppStore.getState().recordViolation(url);
-      throw new Error(`[OfflineCoder] Outbound request to '${url}' is strictly blocked in offline mode.`);
+      throw new Error(`[localMind] Outbound request to '${url}' is strictly blocked in offline mode.`);
     }
 
     return originalFetch.apply(this, [input, init]);
@@ -50,13 +50,13 @@ export function initOfflineSentinel() {
   ) {
     const urlStr = url.toString();
     if (!isAllowedHost(urlStr)) {
-      console.error(`[OfflineCoder SECURITY VIOLATION] XHR blocked: ${urlStr}`);
+      console.error(`[localMind SECURITY VIOLATION] XHR blocked: ${urlStr}`);
       useAppStore.getState().recordViolation(urlStr);
-      throw new Error(`[OfflineCoder] Outbound XHR to '${urlStr}' is strictly blocked in offline mode.`);
+      throw new Error(`[localMind] Outbound XHR to '${urlStr}' is strictly blocked in offline mode.`);
     }
     return originalOpen.apply(this, [method, url, async ?? true, user, password]);
   };
 
-  console.log('🛡️ [OfflineCoder] Network sentinel active: Outbound external egress blocked.');
+  console.log('🛡️ [localMind] Network sentinel active: Outbound external egress blocked.');
 }
 

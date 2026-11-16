@@ -20,27 +20,29 @@ export const Header: React.FC = () => {
   const activeModel = useAppStore((state) => state.activeModel);
 
   return (
-    <header className="flex items-center justify-between px-5 py-3 bg-black border-b border-neutral-800 select-none">
+    <header className="flex items-center justify-between px-5 py-3 bg-[#0a0e17] border-b border-slate-800/80 select-none">
       {/* Brand & Title */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-700 text-white">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 shadow-sm shadow-indigo-500/20">
           <Code2 className="w-5 h-5" />
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-sm font-bold tracking-tight text-white">OfflineCoder</h1>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-neutral-900 text-neutral-300 border border-neutral-700">
+            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-1">
+              local<span className="text-indigo-400">Mind</span>
+            </h1>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               Gemma Edition
             </span>
           </div>
-          <p className="text-[11px] text-neutral-500 hidden sm:block">
+          <p className="text-[11px] text-slate-400 hidden sm:block">
             Strictly code-only, local-first inference
           </p>
         </div>
       </div>
 
       {/* Center Nav Tabs */}
-      <nav className="flex items-center gap-1 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
+      <nav className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
         <button
           onClick={() => {
             setActiveTab('editor');
@@ -48,8 +50,8 @@ export const Header: React.FC = () => {
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
             activeTab === 'editor'
-              ? 'bg-white text-black shadow-sm font-semibold'
-              : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
+              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
           }`}
         >
           <Code2 className="w-3.5 h-3.5" />
@@ -63,8 +65,8 @@ export const Header: React.FC = () => {
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
             activeTab === 'models'
-              ? 'bg-white text-black shadow-sm font-semibold'
-              : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
+              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
           }`}
         >
           <Cpu className="w-3.5 h-3.5" />
@@ -78,8 +80,8 @@ export const Header: React.FC = () => {
           }}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
             activeTab === 'snippets'
-              ? 'bg-white text-black shadow-sm font-semibold'
-              : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
+              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
           }`}
         >
           <BookmarkCheck className="w-3.5 h-3.5" />
@@ -92,16 +94,16 @@ export const Header: React.FC = () => {
         {/* RAM Quick Monitor */}
         {systemRamTotal > 0 && (
           <div
-            className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-lg bg-neutral-950 border border-neutral-800 text-[11px] font-mono text-neutral-400"
+            className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400"
             title={`RAM: ${systemRamAvailable}GB free of ${systemRamTotal}GB (${systemRamPercent}% used)`}
           >
-            <HardDrive className="w-3 h-3 text-neutral-500" />
+            <HardDrive className="w-3 h-3 text-slate-500" />
             <span>
               RAM: {systemRamAvailable}GB free
             </span>
-            <div className="w-12 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="w-12 h-1.5 bg-slate-800 rounded-full overflow-hidden">
               <div
-                className={`h-full ${systemRamPercent > 85 ? 'bg-neutral-300' : 'bg-white'}`}
+                className={`h-full ${systemRamPercent > 85 ? 'bg-rose-500' : 'bg-indigo-500'}`}
                 style={{ width: `${systemRamPercent}%` }}
               />
             </div>
@@ -114,7 +116,7 @@ export const Header: React.FC = () => {
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
-          className="p-2 text-neutral-400 hover:text-white rounded-lg hover:bg-neutral-900 border border-transparent hover:border-neutral-800 transition"
+          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
           title="Settings"
         >
           <SettingsIcon className="w-4 h-4" />

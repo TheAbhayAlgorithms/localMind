@@ -4,7 +4,7 @@
 cd "$(dirname "$0")"
 
 echo "================================================="
-echo "       Starting OfflineCoder (100% Offline AI)   "
+echo "       Starting localMind (100% Offline AI)      "
 echo "================================================="
 
 # 1. Start Ollama in the background if not already running
@@ -28,7 +28,7 @@ echo "🚀 Starting backend server on port 8000..."
 
 echo ""
 echo "================================================="
-echo "  OfflineCoder is LIVE at: http://127.0.0.1:8000  "
+echo "  localMind is LIVE at: http://127.0.0.1:8000    "
 echo "  Press Ctrl+C here to stop, or run ./stop.sh    "
 echo "================================================="
 echo ""

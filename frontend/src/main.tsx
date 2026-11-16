@@ -35,7 +35,7 @@ if ('serviceWorker' in navigator) {
     registerSW({
       immediate: true,
       onOfflineReady() {
-        console.log('⚡ [OfflineCoder] PWA assets fully precached. App is 100% offline ready.');
+        console.log('⚡ [localMind] PWA assets fully precached. App is 100% offline ready.');
       },
     });
   }).catch(() => {

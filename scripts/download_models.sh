@@ -2,13 +2,13 @@
 set -e
 
 # ==============================================================================
-# OfflineCoder - Model Pre-Download Helper
+# localMind - Model Pre-Download Helper
 # Run this ONCE while connected to the internet BEFORE taking your machine offline.
 # The app itself will run strictly offline with zero external network egress.
 # ==============================================================================
 
 echo "========================================================"
-echo "OfflineCoder: Pre-downloading Google Gemma Models"
+echo "localMind: Pre-downloading Google Gemma Models"
 echo "========================================================"
 
 MODELS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/models"

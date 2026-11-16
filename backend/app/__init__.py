@@ -1,2 +1,2 @@
-# OfflineCoder backend package
+# localMind backend package
 

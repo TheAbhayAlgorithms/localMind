@@ -23,9 +23,9 @@ def verify_offline_configuration():
         if hostname not in settings.allowed_hosts and not hostname.startswith("127."):
             raise RuntimeError(
                 f"[SECURITY ALERT] Outbound network target detected in {name} endpoint: {endpoint}. "
-                f"OfflineCoder strictly disallows non-local connections. Only localhost/loopback addresses allowed."
+                f"localMind strictly disallows non-local connections. Only localhost/loopback addresses allowed."
             )
-    print(f"🔒 [OfflineCoder] Startup offline verification passed: Zero external outbound network targets.")
+    print(f"🔒 [localMind] Startup offline verification passed: Zero external outbound network targets.")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -70,6 +70,7 @@ async def security_headers_middleware(request: Request, call_next):
     response.headers["Content-Security-Policy"] = csp
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-localMind-Mode"] = "STRICT_OFFLINE"
     response.headers["X-OfflineCoder-Mode"] = "STRICT_OFFLINE"
     return response
 

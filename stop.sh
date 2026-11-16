@@ -3,7 +3,7 @@
 # Navigate to project directory
 cd "$(dirname "$0")"
 
-echo "🛑 Stopping OfflineCoder and Ollama..."
+echo "🛑 Stopping localMind and Ollama..."
 
 # Kill backend processes on port 8000
 lsof -ti :8000 | xargs kill -9 2>/dev/null || true
@@ -19,6 +19,6 @@ pkill -9 -f "llama-server" 2>/dev/null || true
 
 sleep 0.5
 
-echo "✅ All OfflineCoder processes completely terminated."
+echo "✅ All localMind processes completely terminated."
 echo "✅ All RAM and GPU VRAM have been freed."
 

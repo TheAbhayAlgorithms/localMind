@@ -3,7 +3,7 @@ import re
 import logging
 from typing import Tuple, Optional, List
 
-logger = logging.getLogger("offlinecoder.validator")
+logger = logging.getLogger("localmind.validator")
 
 # Try importing tree-sitter bindings
 _TS_AVAILABLE = False

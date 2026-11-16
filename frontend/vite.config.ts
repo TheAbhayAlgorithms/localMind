@@ -19,8 +19,8 @@ export default defineConfig({
         ]
       },
       manifest: {
-        name: 'OfflineCoder',
-        short_name: 'OfflineCoder',
+        name: 'localMind',
+        short_name: 'localMind',
         description: 'Zero-egress local code generation powered by Gemma models',
         theme_color: '#090d16',
         background_color: '#090d16',

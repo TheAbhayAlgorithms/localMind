@@ -31,8 +31,8 @@ export const LanguageSelect: React.FC = () => {
             type="button"
             className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
               isSelected
-                ? 'bg-white text-black font-semibold shadow-sm ring-1 ring-neutral-300'
-                : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-neutral-200 border border-neutral-800'
+                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400'
+                : 'bg-slate-800/80 hover:bg-slate-750 text-slate-400 hover:text-slate-200 border border-slate-700/50'
             }`}
           >
             {lang}

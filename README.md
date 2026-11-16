@@ -1,4 +1,4 @@
-# 🔒 OfflineCoder
+# 🔒 localMind
 
 > **100% Offline, Local-First AI Code Generator powered by Google Gemma**  
 > *Zero conversational prose. Zero internet access. Pure, runnable code only.*
@@ -24,7 +24,7 @@ Save these two commands. You can run them anytime—even months from now—to st
 > **From Anywhere on Your Mac (Even `~`):**
 > ```bash
 > # Start
-> cd Documents/Antigravity/useoffline && make start
+> cd Documents/Antigravity/localMind && make start
 > 
 > # Emergency Kill (Immediately frees all RAM from anywhere)
 > pkill -9 -f uvicorn; pkill -9 -f ollama
@@ -32,9 +32,9 @@ Save these two commands. You can run them anytime—even months from now—to st
 
 ---
 
-## 📖 What is OfflineCoder?
+## 📖 What is localMind?
 
-**OfflineCoder** is a local-first web platform where you type a coding prompt and receive **clean, runnable code only**—with no explanations, no pleasantries, and no conversational wrapper.
+**localMind** is a local-first web platform where you type a coding prompt and receive **clean, runnable code only**—with no explanations, no pleasantries, and no conversational wrapper.
 
 All neural network inference executes 100% locally on your machine's hardware (Apple Silicon Metal GPU or NVIDIA CUDA) using Google's open-weights **Gemma** models. **Zero network calls leave your machine at runtime.**
 

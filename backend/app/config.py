@@ -7,7 +7,7 @@ from typing import Literal, Union, List
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Settings(BaseSettings):
-    app_name: str = "OfflineCoder"
+    app_name: str = "localMind"
     debug: bool = False
     
     # Model runtime settings
@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     sandbox_memory_limit_mb: int = 256
     
     # Database
-    database_url: str = f"sqlite:///{BASE_DIR}/offlinecoder.db"
+    database_url: str = f"sqlite:///{BASE_DIR}/localmind.db"
     
     # Offline strict enforcement
     offline_strict_mode: bool = True
