@@ -24,29 +24,30 @@ export const SettingsModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+      <div className="bg-[#FFFFFF] border border-black/[0.08] rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden text-[#1D1D1F]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
-          <div className="flex items-center gap-2 text-slate-100 font-semibold text-sm">
-            <Sliders className="w-4 h-4 text-indigo-400" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
+          <div className="flex items-center gap-2 text-[#1D1D1F] font-bold text-sm">
+            <Sliders className="w-4 h-4 text-[#007AFF]" />
             <span>Inference & Sandbox Settings</span>
           </div>
           <button
             onClick={() => setIsSettingsOpen(false)}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            aria-label="Close Settings"
+            className="p-1.5 text-[#86868B] hover:text-[#1D1D1F] rounded-xl hover:bg-[#F5F5F7] transition"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 text-xs text-slate-300">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5 text-xs text-[#4B5563]">
           {/* Temperature */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label className="font-medium text-slate-200">Temperature: {form.temperature}</label>
-              <span className="text-[11px] text-slate-500 font-mono">0.0 (strict) - 1.0 (creative)</span>
+              <label className="font-semibold text-[#1D1D1F]">Temperature: {form.temperature}</label>
+              <span className="text-[11px] text-[#86868B] font-mono">0.0 (strict) - 1.0 (creative)</span>
             </div>
             <input
               type="range"
@@ -55,9 +56,9 @@ export const SettingsModal: React.FC = () => {
               step="0.05"
               value={form.temperature}
               onChange={(e) => setForm({ ...form, temperature: parseFloat(e.target.value) })}
-              className="w-full accent-indigo-500 bg-slate-800 rounded-lg cursor-pointer"
+              className="w-full accent-[#007AFF] bg-[#E5E5EA] rounded-lg cursor-pointer"
             />
-            <p className="text-[11px] text-slate-500 mt-1">
+            <p className="text-[11px] text-[#86868B] mt-1">
               Low temperature (0.05 - 0.2) is strongly recommended for deterministic, syntactically correct code.
             </p>
           </div>
@@ -65,8 +66,8 @@ export const SettingsModal: React.FC = () => {
           {/* Top_P */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <label className="font-medium text-slate-200">Top-P: {form.top_p}</label>
-              <span className="text-[11px] text-slate-500 font-mono">0.1 - 1.0</span>
+              <label className="font-semibold text-[#1D1D1F]">Top-P: {form.top_p}</label>
+              <span className="text-[11px] text-[#86868B] font-mono">0.1 - 1.0</span>
             </div>
             <input
               type="range"
@@ -75,14 +76,14 @@ export const SettingsModal: React.FC = () => {
               step="0.05"
               value={form.top_p}
               onChange={(e) => setForm({ ...form, top_p: parseFloat(e.target.value) })}
-              className="w-full accent-indigo-500 bg-slate-800 rounded-lg cursor-pointer"
+              className="w-full accent-[#007AFF] bg-[#E5E5EA] rounded-lg cursor-pointer"
             />
           </div>
 
           {/* Context Length & Max Tokens */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-medium text-slate-200 mb-1">Max Predict Tokens</label>
+              <label className="block font-semibold text-[#1D1D1F] mb-1">Max Predict Tokens</label>
               <input
                 type="number"
                 min="256"
@@ -90,11 +91,11 @@ export const SettingsModal: React.FC = () => {
                 step="256"
                 value={form.max_tokens}
                 onChange={(e) => setForm({ ...form, max_tokens: parseInt(e.target.value) || 2048 })}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#F5F5F7] border border-black/[0.06] rounded-xl px-3 py-2 text-[#1D1D1F] font-mono focus:outline-none focus:border-[#007AFF] focus:bg-white transition"
               />
             </div>
             <div>
-              <label className="block font-medium text-slate-200 mb-1">Context Length</label>
+              <label className="block font-semibold text-[#1D1D1F] mb-1">Context Length</label>
               <input
                 type="number"
                 min="2048"
@@ -102,18 +103,18 @@ export const SettingsModal: React.FC = () => {
                 step="1024"
                 value={form.context_length}
                 onChange={(e) => setForm({ ...form, context_length: parseInt(e.target.value) || 4096 })}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-[#F5F5F7] border border-black/[0.06] rounded-xl px-3 py-2 text-[#1D1D1F] font-mono focus:outline-none focus:border-[#007AFF] focus:bg-white transition"
               />
             </div>
           </div>
 
           {/* Default Language */}
           <div>
-            <label className="block font-medium text-slate-200 mb-1">Default Language</label>
+            <label className="block font-semibold text-[#1D1D1F] mb-1">Default Language</label>
             <select
               value={form.default_language}
               onChange={(e) => setForm({ ...form, default_language: e.target.value })}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-[#F5F5F7] border border-black/[0.06] rounded-xl px-3 py-2 text-[#1D1D1F] focus:outline-none focus:border-[#007AFF] focus:bg-white transition"
             >
               <option value="Auto">Auto (Model chooses best language)</option>
               <option value="Python">Python</option>
@@ -129,15 +130,15 @@ export const SettingsModal: React.FC = () => {
           </div>
 
           {/* Sandboxed Code Execution Toggle */}
-          <div className="pt-2 border-t border-slate-800">
+          <div className="pt-2 border-t border-black/[0.06]">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4 text-emerald-400" />
+                <span className="font-bold text-[#1D1D1F] flex items-center gap-1.5">
+                  <Terminal className="w-4 h-4 text-[#34C759]" />
                   Enable Sandboxed "Run" (Python / JS)
                 </span>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Runs generated code in a local subprocess with strict timeout (5s), resource caps, and zero network. Disabled by default.
+                <p className="text-[11px] text-[#86868B] mt-0.5">
+                  Runs generated code in a local subprocess with strict timeout (5s), resource caps, and zero network.
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer ml-4">
@@ -147,27 +148,27 @@ export const SettingsModal: React.FC = () => {
                   onChange={(e) => setForm({ ...form, allow_code_execution: e.target.checked })}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-slate-750 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                <div className="w-11 h-6 bg-[#E5E5EA] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#34C759]"></div>
               </label>
             </div>
           </div>
 
           {/* Footer Actions */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-black/[0.06]">
             <button
               type="button"
               onClick={() => setIsSettingsOpen(false)}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-slate-300 rounded-lg transition"
+              className="px-4 py-2 bg-[#E5E5EA] hover:bg-[#D1D1D6] text-[#1D1D1F] rounded-xl font-semibold transition"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium shadow-md transition"
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#007AFF] hover:bg-[#0066CC] text-white font-semibold rounded-xl shadow-sm transition"
             >
               {saved ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-300" />
+                  <Check className="w-4 h-4 text-white" />
                   <span>Saved!</span>
                 </>
               ) : (
@@ -180,4 +181,3 @@ export const SettingsModal: React.FC = () => {
     </div>
   );
 };
-

@@ -35,17 +35,17 @@ export const PromptBox: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-3.5 shadow-xl transition-all focus-within:border-indigo-500/80 focus-within:ring-1 focus-within:ring-indigo-500/50">
-      {/* Language Selector Bar */}
+    <div className="bg-[#FFFFFF] border border-black/[0.06] rounded-2xl p-4 shadow-sm transition-all focus-within:shadow-md focus-within:border-[#007AFF]/40">
+      {/* Target Language Selector Bar */}
       <div className="flex items-center justify-between mb-2.5">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-          <span className="text-xs font-medium text-slate-300">Target Language:</span>
+          <Sparkles className="w-3.5 h-3.5 text-[#007AFF]" />
+          <span className="text-xs font-semibold text-[#1D1D1F]">Target Language:</span>
         </div>
         <LanguageSelect />
       </div>
 
-      {/* Input Field & Buttons */}
+      {/* Input Field & Submit Action */}
       <form onSubmit={handleSubmit} className="relative">
         <textarea
           ref={textareaRef}
@@ -53,16 +53,17 @@ export const PromptBox: React.FC = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type what code you need... (e.g. 'Binary search in Python', 'Debounce hook in React TS', 'LRU Cache')"
-          className="w-full bg-slate-900/90 text-slate-100 placeholder-slate-500 text-sm rounded-lg px-3.5 py-2.5 pr-28 resize-none border border-slate-700/60 focus:outline-none focus:border-indigo-500 font-sans"
+          placeholder="Describe the code you need... (e.g. 'Binary search in Python', 'Debounce hook in React TS', 'LRU Cache')"
+          className="w-full bg-[#F5F5F7] text-[#1D1D1F] placeholder-[#86868B] text-sm rounded-xl px-4 py-3 pr-28 resize-none border border-transparent focus:outline-none focus:border-[#007AFF] focus:bg-[#FFFFFF] transition-all font-sans"
         />
 
-        <div className="absolute right-2 bottom-3 flex items-center gap-1.5">
+        <div className="absolute right-2.5 bottom-3 flex items-center gap-1.5">
           {isGenerating ? (
             <button
               type="button"
               onClick={stopGeneration}
-              className="flex items-center gap-1 px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-medium shadow-md transition"
+              aria-label="Stop generation"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#FF3B30] hover:bg-[#D70015] text-white rounded-xl text-xs font-semibold shadow-sm transition"
               title="Stop generation"
             >
               <Square className="w-3 h-3 fill-current" />
@@ -72,21 +73,23 @@ export const PromptBox: React.FC = () => {
             <button
               type="submit"
               disabled={!prompt.trim()}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg text-xs font-medium shadow-md shadow-indigo-600/20 transition"
+              aria-label="Generate code"
+              className="flex items-center gap-1.5 px-4 py-1.5 bg-[#007AFF] hover:bg-[#0066CC] disabled:opacity-30 disabled:cursor-not-allowed text-white rounded-xl text-xs font-semibold shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
               title="Generate clean code (Enter)"
             >
               <span>Generate</span>
-              <CornerDownLeft className="w-3 h-3" />
+              <CornerDownLeft className="w-3.5 h-3.5 stroke-[2.5]" />
             </button>
           )}
         </div>
       </form>
 
-      <div className="flex items-center justify-between mt-2 text-[11px] text-slate-500">
+      <div className="flex items-center justify-between mt-2.5 text-[11px] text-[#86868B]">
         <span>Zero prose, zero network egress. Strictly executable code blocks.</span>
-        <span className="hidden sm:inline">Press <kbd className="px-1 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">Enter</kbd> to generate, <kbd className="px-1 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[10px]">Shift+Enter</kbd> for newline</span>
+        <span className="hidden sm:inline">
+          Press <kbd className="px-1.5 py-0.5 rounded bg-[#E5E5EA] border border-black/[0.04] text-[#1D1D1F] font-mono text-[10px]">Enter</kbd> to generate, <kbd className="px-1.5 py-0.5 rounded bg-[#E5E5EA] border border-black/[0.04] text-[#1D1D1F] font-mono text-[10px]">Shift+Enter</kbd> for newline
+        </span>
       </div>
     </div>
   );
 };
-

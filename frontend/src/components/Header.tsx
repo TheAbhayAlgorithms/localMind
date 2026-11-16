@@ -5,7 +5,7 @@ import {
   BookmarkCheck,
   Settings as SettingsIcon,
   HardDrive,
-  Terminal,
+  Zap,
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { OfflineBadge } from './OfflineBadge';
@@ -20,108 +20,137 @@ export const Header: React.FC = () => {
   const activeModel = useAppStore((state) => state.activeModel);
 
   return (
-    <header className="flex items-center justify-between px-5 py-3 bg-[#0a0e17] border-b border-slate-800/80 select-none">
-      {/* Brand & Title */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 shadow-sm shadow-indigo-500/20">
-          <Code2 className="w-5 h-5" />
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-1">
-              local<span className="text-indigo-400">Mind</span>
-            </h1>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              Gemma Edition
-            </span>
+    <>
+      <header className="flex items-center justify-between px-6 py-3 bg-[#FFFFFF]/90 backdrop-blur-md border-b border-black/[0.06] shadow-sm select-none z-20">
+        {/* Brand & Title (Apple clean typography) */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-[#007AFF] text-white shadow-sm">
+            <Code2 className="w-5 h-5" />
           </div>
-          <p className="text-[11px] text-slate-400 hidden sm:block">
-            Strictly code-only, local-first inference
-          </p>
-        </div>
-      </div>
-
-      {/* Center Nav Tabs */}
-      <nav className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
-        <button
-          onClick={() => {
-            setActiveTab('editor');
-            window.location.hash = 'editor';
-          }}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-            activeTab === 'editor'
-              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-          }`}
-        >
-          <Code2 className="w-3.5 h-3.5" />
-          <span>Editor</span>
-        </button>
-
-        <button
-          onClick={() => {
-            setActiveTab('models');
-            window.location.hash = 'models';
-          }}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-            activeTab === 'models'
-              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-          }`}
-        >
-          <Cpu className="w-3.5 h-3.5" />
-          <span>Models</span>
-        </button>
-
-        <button
-          onClick={() => {
-            setActiveTab('snippets');
-            window.location.hash = 'snippets';
-          }}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
-            activeTab === 'snippets'
-              ? 'bg-indigo-600 text-white shadow-sm font-semibold'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-          }`}
-        >
-          <BookmarkCheck className="w-3.5 h-3.5" />
-          <span>Saved Snippets</span>
-        </button>
-      </nav>
-
-      {/* Right Controls */}
-      <div className="flex items-center gap-3">
-        {/* RAM Quick Monitor */}
-        {systemRamTotal > 0 && (
-          <div
-            className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-400"
-            title={`RAM: ${systemRamAvailable}GB free of ${systemRamTotal}GB (${systemRamPercent}% used)`}
-          >
-            <HardDrive className="w-3 h-3 text-slate-500" />
-            <span>
-              RAM: {systemRamAvailable}GB free
-            </span>
-            <div className="w-12 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${systemRamPercent > 85 ? 'bg-rose-500' : 'bg-indigo-500'}`}
-                style={{ width: `${systemRamPercent}%` }}
-              />
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold text-[#1D1D1F] tracking-tight">
+                localMind
+              </h1>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[#0066CC] border border-black/[0.06] uppercase tracking-wide">
+                Gemma 3
+              </span>
+            </div>
+            <div className="hidden sm:block leading-tight">
+              <span className="text-[11px] text-[#4B5563]">
+                Zero-Egress AI Code Assistant
+              </span>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Offline Badge */}
-        <OfflineBadge />
-
-        {/* Settings Button */}
-        <button
-          onClick={() => setIsSettingsOpen(true)}
-          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
-          title="Settings"
+        {/* Center Nav Tabs (Apple Segmented Capsule) */}
+        <nav
+          className="flex items-center gap-1 bg-[#F5F5F7] p-1 rounded-2xl border border-black/[0.06]"
+          aria-label="Main Navigation"
         >
-          <SettingsIcon className="w-4 h-4" />
-        </button>
+          <button
+            onClick={() => {
+              setActiveTab('editor');
+              window.location.hash = 'editor';
+            }}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+              activeTab === 'editor'
+                ? 'bg-[#FFFFFF] text-[#1D1D1F] font-semibold shadow-sm'
+                : 'text-[#4B5563] hover:text-[#1D1D1F]'
+            }`}
+          >
+            <Code2 className="w-3.5 h-3.5" />
+            <span>Editor</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('models');
+              window.location.hash = 'models';
+            }}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+              activeTab === 'models'
+                ? 'bg-[#FFFFFF] text-[#1D1D1F] font-semibold shadow-sm'
+                : 'text-[#4B5563] hover:text-[#1D1D1F]'
+            }`}
+          >
+            <Cpu className="w-3.5 h-3.5" />
+            <span>Models</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTab('snippets');
+              window.location.hash = 'snippets';
+            }}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all duration-200 ${
+              activeTab === 'snippets'
+                ? 'bg-[#FFFFFF] text-[#1D1D1F] font-semibold shadow-sm'
+                : 'text-[#4B5563] hover:text-[#1D1D1F]'
+            }`}
+          >
+            <BookmarkCheck className="w-3.5 h-3.5" />
+            <span>Saved Snippets</span>
+          </button>
+        </nav>
+
+        {/* Right Controls */}
+        <div className="flex items-center gap-3">
+          {/* RAM Quick Monitor Tile */}
+          {systemRamTotal > 0 && (
+            <div
+              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FFFFFF] border border-black/[0.06] shadow-sm text-xs text-[#1D1D1F]"
+              title={`RAM: ${systemRamAvailable}GB free of ${systemRamTotal}GB (${systemRamPercent}% used)`}
+            >
+              <HardDrive className="w-3.5 h-3.5 text-[#007AFF]" />
+              <span className="font-medium text-[#4B5563]">
+                {systemRamAvailable}GB free
+              </span>
+              <div className="w-12 h-1.5 bg-[#E5E5EA] rounded-full overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-500 ${
+                    systemRamPercent > 85 ? 'bg-[#FF3B30]' : 'bg-[#34C759]'
+                  }`}
+                  style={{ width: `${systemRamPercent}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Offline Badge */}
+          <OfflineBadge />
+
+          {/* Settings Button */}
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            aria-label="Open Settings"
+            className="p-2 text-[#4B5563] hover:text-[#1D1D1F] rounded-xl bg-[#FFFFFF] border border-black/[0.06] shadow-sm hover:shadow transition"
+            title="Settings"
+          >
+            <SettingsIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Bento Subtitle Strip */}
+      <div className="bg-[#FFFFFF]/80 border-b border-black/[0.04] px-6 py-1.5 flex items-center justify-between text-[11px] text-[#4B5563] select-none">
+        <div className="flex items-center gap-2.5">
+          <span className="flex items-center gap-1.5 text-[#34C759] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#34C759] animate-pulse" />
+            100% Offline Local Engine
+          </span>
+          <span className="text-black/15">•</span>
+          <span>Tree-Sitter AST Validated</span>
+          <span className="text-black/15">•</span>
+          <span>Zero Network Egress</span>
+        </div>
+        <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-[#86868B]">
+          <span>Apple Metal Acceleration</span>
+          <span className="text-black/15">•</span>
+          <span>Active: <strong className="text-[#1D1D1F] font-semibold">{activeModel}</strong></span>
+        </div>
       </div>
-    </header>
+    </>
   );
 };

@@ -4,23 +4,34 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        darkBg: '#090d16',
-        panelBg: '#0f172a',
-        cardBg: '#1e293b',
-        borderCol: '#334155',
-        brand: {
-          50: '#eef2ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-        }
+        canvas: '#F5F5F7',
+        tile: '#FFFFFF',
+        ink: '#1D1D1F',
+        blue: {
+          DEFAULT: '#007AFF',
+          tile: '#0066CC',
+        },
+        green: {
+          DEFAULT: '#34C759',
+        },
+        textMuted: '#4B5563',
+        bento: {
+          canvas: '#F5F5F7',
+          tile: '#FFFFFF',
+          ink: '#1D1D1F',
+          blue: '#007AFF',
+          blueTile: '#0066CC',
+          green: '#34C759',
+          muted: '#4B5563',
+          border: 'rgba(0, 0, 0, 0.06)',
+          shadow: '0 1px 3px 0 rgb(0 0 0 / 0.05)',
+        },
       },
       fontFamily: {
-        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Segoe UI"', 'Roboto', 'sans-serif'],
         mono: ['"Courier New"', 'Courier', 'ui-monospace', 'monospace'],
         code: ['"Courier New"', 'Courier', 'monospace'],
       }

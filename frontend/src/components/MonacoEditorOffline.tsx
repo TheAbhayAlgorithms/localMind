@@ -20,72 +20,47 @@ import { useAppStore } from '../store/useAppStore';
 // Point monaco-react directly to the locally bundled instance (zero CDN requests)
 loader.config({ monaco });
 
-// Define rich colored Monaco Editor Theme with italics for keywords, comments, storage & params
+// Define Apple Bento Dark Monaco Editor Theme
 if (monaco && monaco.editor) {
-  monaco.editor.defineTheme('localmind-dark', {
+  monaco.editor.defineTheme('localmind-bento-dark', {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      { token: '', foreground: 'e2e8f0', background: '090d16' },
-      // Keywords & Control flow (italicized)
-      { token: 'keyword', foreground: 'c792ea', fontStyle: 'italic' },
-      { token: 'keyword.control', foreground: 'c792ea', fontStyle: 'italic' },
-      { token: 'keyword.operator', foreground: '89ddff' },
-      // Storage declarations (def, class, function, var, const, let - italicized)
-      { token: 'storage', foreground: 'c792ea', fontStyle: 'italic' },
-      { token: 'storage.type', foreground: 'ffcb6b', fontStyle: 'italic' },
-      { token: 'storage.modifier', foreground: 'c792ea', fontStyle: 'italic' },
-      // Comments (italicized)
-      { token: 'comment', foreground: '676e95', fontStyle: 'italic' },
-      { token: 'comment.doc', foreground: '7a82ab', fontStyle: 'italic' },
-      // Strings (vivid emerald)
-      { token: 'string', foreground: 'c3e88d' },
-      { token: 'string.escape', foreground: '89ddff' },
-      // Numbers (warm amber)
-      { token: 'number', foreground: 'f78c6c' },
-      { token: 'number.hex', foreground: 'f78c6c' },
-      // Functions (bright electric blue)
-      { token: 'function', foreground: '82aaff' },
-      { token: 'function.declaration', foreground: '82aaff', fontStyle: 'bold' },
-      // Types & Classes (turquoise / cyan)
-      { token: 'type', foreground: '4ec9b0' },
-      { token: 'type.identifier', foreground: '4ec9b0' },
-      { token: 'class', foreground: 'ffcb6b' },
-      // Variables & Parameters (parameters italicized)
-      { token: 'variable', foreground: 'eeffff' },
-      { token: 'variable.parameter', foreground: 'f78c6c', fontStyle: 'italic' },
-      { token: 'variable.predefined', foreground: 'ff5370', fontStyle: 'italic' },
-      // Constants (null, true, false, self, this)
-      { token: 'constant', foreground: 'f78c6c' },
-      { token: 'constant.language', foreground: 'ff5370', fontStyle: 'italic' },
-      // Tags & Attributes (HTML/JSX, attributes italicized)
-      { token: 'tag', foreground: 'f07178' },
-      { token: 'tag.id', foreground: '82aaff' },
-      { token: 'tag.class', foreground: '82aaff' },
-      { token: 'attribute.name', foreground: 'ffcb6b', fontStyle: 'italic' },
-      { token: 'attribute.value', foreground: 'c3e88d' },
-      // Delimiters & punctuation
-      { token: 'delimiter', foreground: '89ddff' },
-      { token: 'delimiter.bracket', foreground: 'abb2bf' },
-      // Decorators
-      { token: 'meta.decorator', foreground: '82aaff', fontStyle: 'italic' },
-      { token: 'regexp', foreground: '89ddff' },
+      { token: '', foreground: 'f5f5f7', background: '1d1d1f' },
+      { token: 'keyword', foreground: 'ff7ab2', fontStyle: 'italic' },
+      { token: 'keyword.control', foreground: 'ff7ab2', fontStyle: 'italic' },
+      { token: 'keyword.operator', foreground: '5fc9f8' },
+      { token: 'storage', foreground: 'ff7ab2', fontStyle: 'italic' },
+      { token: 'storage.type', foreground: '66d9ef', fontStyle: 'italic' },
+      { token: 'storage.modifier', foreground: 'ff7ab2', fontStyle: 'italic' },
+      { token: 'comment', foreground: '86868b', fontStyle: 'italic' },
+      { token: 'comment.doc', foreground: '98989d', fontStyle: 'italic' },
+      { token: 'string', foreground: '34c759' },
+      { token: 'string.escape', foreground: '5fc9f8' },
+      { token: 'number', foreground: 'ff9f0a' },
+      { token: 'function', foreground: '64d2ff' },
+      { token: 'function.declaration', foreground: '64d2ff', fontStyle: 'bold' },
+      { token: 'type', foreground: '40c8ae' },
+      { token: 'variable', foreground: 'f5f5f7' },
+      { token: 'variable.parameter', foreground: 'ff9f0a', fontStyle: 'italic' },
+      { token: 'constant', foreground: 'ff9f0a' },
+      { token: 'delimiter', foreground: '86868b' },
     ],
     colors: {
-      'editor.background': '#090d16',
-      'editor.foreground': '#e2e8f0',
-      'editor.lineHighlightBackground': '#131b2e70',
+      'editor.background': '#1D1D1F',
+      'editor.foreground': '#F5F5F7',
+      'editor.lineHighlightBackground': '#2C2C2E60',
       'editor.lineHighlightBorder': '#00000000',
-      'editorLineNumber.foreground': '#475569',
-      'editorLineNumber.activeForeground': '#818cf8',
-      'editorCursor.foreground': '#38bdf8',
-      'editor.selectionBackground': '#264f7880',
-      'editor.inactiveSelectionBackground': '#1e293b60',
-      'editorIndentGuide.background': '#1e293b60',
-      'editorIndentGuide.activeBackground': '#4338ca80',
-      'scrollbarSlider.background': '#33415550',
-      'scrollbarSlider.hoverBackground': '#47556980',
-      'scrollbarSlider.activeBackground': '#64748b90',
+      'editorLineNumber.foreground': '#636366',
+      'editorLineNumber.activeForeground': '#007AFF',
+      'editorCursor.foreground': '#007AFF',
+      'editor.selectionBackground': '#007AFF33',
+      'editor.inactiveSelectionBackground': '#3A3A3C40',
+      'editorIndentGuide.background': '#3A3A3C40',
+      'editorIndentGuide.activeBackground': '#007AFF50',
+      'scrollbarSlider.background': '#3A3A3C80',
+      'scrollbarSlider.hoverBackground': '#48484A',
+      'scrollbarSlider.activeBackground': '#636366',
     },
   });
 }
@@ -168,49 +143,49 @@ export const MonacoEditorOffline: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#0d131f] border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+    <div className="flex-1 flex flex-col h-full bg-[#1D1D1F] border border-black/[0.08] rounded-2xl overflow-hidden shadow-sm">
       {/* Editor Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 gap-2">
+      <div className="flex flex-wrap items-center justify-between px-4 py-2.5 bg-[#242426] border-b border-white/[0.08] gap-2">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#34C759] animate-pulse" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-white">
               {detectedLanguage || 'Code'}
             </span>
-            <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono border border-slate-700">
+            <span className="text-xs px-2 py-0.5 rounded-md bg-white/10 text-white/80 font-mono">
               .{fileExtension || 'txt'}
             </span>
           </div>
 
-          {/* Validation Status Indicator */}
+          {/* Tree-Sitter Validation Status */}
           {code && (
             <div className="flex items-center gap-1.5 text-xs">
               {isSyntaxValid ? (
-                <span className="flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  Tree-Sitter: Valid Syntax
+                <span className="flex items-center gap-1 text-[#34C759] bg-[#34C759]/15 px-2.5 py-0.5 rounded-full border border-[#34C759]/30 font-medium">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#34C759]" />
+                  Valid Syntax
                 </span>
               ) : (
                 <span
-                  className="flex items-center gap-1 text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20"
+                  className="flex items-center gap-1 text-[#FF9500] bg-[#FF9500]/15 px-2.5 py-0.5 rounded-full border border-[#FF9500]/30 font-medium"
                   title={syntaxError || 'Syntax warning'}
                 >
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
+                  <AlertCircle className="w-3.5 h-3.5 text-[#FF9500]" />
                   Syntax Check Failed {retryCount > 0 && `(Retried ${retryCount}x)`}
                 </span>
               )}
             </div>
           )}
 
-          {/* Generation Stats */}
+          {/* Telemetry Stats */}
           {tokensGenerated > 0 && (
-            <div className="hidden sm:flex items-center gap-3 text-xs text-slate-400 font-mono">
+            <div className="hidden sm:flex items-center gap-3 text-xs text-white/60 font-mono">
               <span className="flex items-center gap-1">
-                <Clock className="w-3 h-3 text-slate-500" />
+                <Clock className="w-3 h-3 text-white/40" />
                 {durationMs}ms
               </span>
               <span className="flex items-center gap-1">
-                <Cpu className="w-3 h-3 text-slate-500" />
+                <Cpu className="w-3 h-3 text-white/40" />
                 {tokensGenerated} tok
               </span>
             </div>
@@ -223,15 +198,16 @@ export const MonacoEditorOffline: React.FC = () => {
           <button
             onClick={runCode}
             disabled={!code || isGenerating || isRunningCode}
+            aria-label="Run Code"
             title={
               settings.allow_code_execution
                 ? 'Run in isolated local subprocess'
                 : 'Execution disabled in Settings'
             }
-            className={`flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition ${
+            className={`flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] ${
               settings.allow_code_execution && code
-                ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm'
-                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/40'
+                ? 'bg-[#007AFF] hover:bg-[#0066CC] text-white shadow-sm'
+                : 'bg-white/10 text-white/30 cursor-not-allowed'
             }`}
           >
             <Play className={`w-3.5 h-3.5 ${isRunningCode ? 'animate-spin' : ''}`} />
@@ -241,10 +217,11 @@ export const MonacoEditorOffline: React.FC = () => {
           {/* Console drawer toggle */}
           <button
             onClick={() => setIsConsoleOpen(!isConsoleOpen)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs transition border ${
+            aria-label="Toggle Run Console Output"
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs transition border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] ${
               isConsoleOpen
-                ? 'bg-slate-700 text-white border-slate-600'
-                : 'bg-slate-800 text-slate-400 hover:text-white border-slate-700'
+                ? 'bg-white/20 text-white border-white/30'
+                : 'bg-white/10 text-white/80 hover:text-white border-white/10'
             }`}
             title="Toggle Run Console Output"
           >
@@ -255,10 +232,11 @@ export const MonacoEditorOffline: React.FC = () => {
           <button
             onClick={handleCopy}
             disabled={!code}
-            className="flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-md text-xs border border-slate-700 transition"
+            aria-label="Copy Code"
+            className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 disabled:opacity-30 disabled:cursor-not-allowed rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
             title="Copy Code"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-[#34C759]" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'Copied!' : 'Copy'}</span>
           </button>
 
@@ -266,7 +244,8 @@ export const MonacoEditorOffline: React.FC = () => {
           <button
             onClick={handleDownload}
             disabled={!code}
-            className="flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-md text-xs border border-slate-700 transition"
+            aria-label="Download Code as File"
+            className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 disabled:opacity-30 disabled:cursor-not-allowed rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
             title="Download as File"
           >
             <Download className="w-3.5 h-3.5" />
@@ -277,10 +256,11 @@ export const MonacoEditorOffline: React.FC = () => {
           <button
             onClick={() => setSaveModalOpen(true)}
             disabled={!code}
-            className="flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded-md text-xs border border-slate-700 transition"
+            aria-label="Save to Snippets"
+            className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 disabled:opacity-30 disabled:cursor-not-allowed rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
             title="Save to Snippets"
           >
-            <BookmarkPlus className="w-3.5 h-3.5" />
+            <BookmarkPlus className="w-3.5 h-3.5 text-[#007AFF]" />
             <span className="hidden md:inline">Save</span>
           </button>
 
@@ -288,7 +268,8 @@ export const MonacoEditorOffline: React.FC = () => {
           <button
             onClick={generateCodeStream}
             disabled={isGenerating}
-            className="flex items-center gap-1 px-2.5 py-1 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 hover:text-white rounded-md text-xs transition border border-indigo-500/30"
+            aria-label="Regenerate Code"
+            className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 rounded-lg text-xs transition border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
             title="Regenerate"
           >
             <RotateCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -298,10 +279,10 @@ export const MonacoEditorOffline: React.FC = () => {
 
       {/* User-visible Error Banner */}
       {errorMessage && (
-        <div className="bg-rose-950/90 border-b border-rose-800/80 px-4 py-2.5 flex items-center justify-between text-xs text-rose-200">
+        <div className="bg-[#FF3B30]/15 border-b border-[#FF3B30]/30 px-4 py-2.5 flex items-center justify-between text-xs text-[#FF3B30]">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span className="font-medium">{errorMessage}</span>
+            <AlertCircle className="w-4 h-4 text-[#FF3B30] shrink-0" />
+            <span className="font-medium text-white">{errorMessage}</span>
           </div>
           <div className="flex items-center gap-2">
             {errorActionLabel && (
@@ -312,14 +293,15 @@ export const MonacoEditorOffline: React.FC = () => {
                     window.location.hash = 'models';
                   }
                 }}
-                className="px-2.5 py-1 bg-rose-800 hover:bg-rose-700 text-white rounded text-[11px] font-semibold transition shadow-sm"
+                className="px-2.5 py-1 bg-[#FF3B30] hover:bg-[#D70015] text-white rounded-lg text-[11px] font-semibold transition shadow-sm"
               >
                 {errorActionLabel}
               </button>
             )}
             <button
               onClick={() => setErrorMessage(null)}
-              className="p-1 hover:text-white rounded"
+              aria-label="Dismiss error"
+              className="p-1 text-white/60 hover:text-white rounded"
               title="Dismiss error"
             >
               <X className="w-3.5 h-3.5" />
@@ -330,12 +312,16 @@ export const MonacoEditorOffline: React.FC = () => {
 
       {/* Generation Status Banner */}
       {isGenerating && (
-        <div className="bg-indigo-950/70 border-b border-indigo-800/40 px-4 py-1.5 flex items-center justify-between text-xs text-indigo-300 animate-pulse">
+        <div className="bg-[#007AFF]/15 border-b border-[#007AFF]/25 px-4 py-2 flex items-center justify-between text-xs text-[#007AFF]">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
-            <span>{generationStatus || 'Generating with local Gemma...'}</span>
+            <span className="inline-block w-2 h-2 rounded-full bg-[#007AFF] animate-ping" />
+            <span className="font-medium text-white">
+              {generationStatus || 'Generating with local Gemma...'}
+            </span>
           </div>
-          <span className="font-mono text-[11px] text-indigo-400/80">Model: {activeModel}</span>
+          <span className="font-mono text-[11px] text-white/60">
+            Model: <span className="text-white font-semibold">{activeModel}</span>
+          </span>
         </div>
       )}
 
@@ -346,7 +332,7 @@ export const MonacoEditorOffline: React.FC = () => {
           language={getMonacoLang(detectedLanguage)}
           value={code || '// Ready. Type your prompt below to generate clean code.\n// Zero prose, zero internet access.'}
           onChange={(val) => setCode(val || '')}
-          theme="localmind-dark"
+          theme="localmind-bento-dark"
           options={{
             readOnly: isGenerating,
             minimap: { enabled: true, side: 'right' },
@@ -367,45 +353,45 @@ export const MonacoEditorOffline: React.FC = () => {
 
       {/* Save Snippet Modal */}
       {saveModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-xl p-5 w-full max-w-md shadow-2xl">
-            <h3 className="text-base font-semibold text-slate-100 mb-3 flex items-center gap-2">
-              <BookmarkPlus className="w-4 h-4 text-indigo-400" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-[#FFFFFF] border border-black/[0.08] rounded-3xl p-6 w-full max-w-md shadow-2xl text-[#1D1D1F]">
+            <h3 className="text-base font-bold text-[#1D1D1F] mb-3 flex items-center gap-2">
+              <BookmarkPlus className="w-5 h-5 text-[#007AFF]" />
               Save Code Snippet to Local SQLite
             </h3>
-            <form onSubmit={handleSaveSnippet} className="space-y-3">
+            <form onSubmit={handleSaveSnippet} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Title</label>
+                <label className="block text-xs font-semibold text-[#4B5563] mb-1">Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Binary Search in Python"
                   value={snippetTitle}
                   onChange={(e) => setSnippetTitle(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-sans"
+                  className="w-full px-3.5 py-2 bg-[#F5F5F7] border border-black/[0.06] rounded-xl text-sm text-[#1D1D1F] placeholder-[#86868B] focus:outline-none focus:border-[#007AFF] focus:bg-white font-sans"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Tags (comma separated)</label>
+                <label className="block text-xs font-semibold text-[#4B5563] mb-1">Tags (comma separated)</label>
                 <input
                   type="text"
                   placeholder="e.g. algorithms, search, python"
                   value={snippetTags}
                   onChange={(e) => setSnippetTags(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 font-sans"
+                  className="w-full px-3.5 py-2 bg-[#F5F5F7] border border-black/[0.06] rounded-xl text-sm text-[#1D1D1F] placeholder-[#86868B] focus:outline-none focus:border-[#007AFF] focus:bg-white font-sans"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setSaveModalOpen(false)}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs border border-slate-700 transition"
+                  className="px-4 py-2 bg-[#E5E5EA] hover:bg-[#D1D1D6] text-[#1D1D1F] rounded-xl text-xs font-semibold transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium shadow-sm transition"
+                  className="px-4 py-2 bg-[#007AFF] hover:bg-[#0066CC] text-white rounded-xl text-xs font-semibold shadow-sm transition"
                 >
                   Save Snippet
                 </button>
@@ -417,4 +403,3 @@ export const MonacoEditorOffline: React.FC = () => {
     </div>
   );
 };
-

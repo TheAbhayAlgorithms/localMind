@@ -29,10 +29,10 @@ export const LanguageSelect: React.FC = () => {
             key={lang}
             onClick={() => setSelectedLanguage(lang)}
             type="button"
-            className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+            className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-all duration-150 ${
               isSelected
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400'
-                : 'bg-slate-800/80 hover:bg-slate-750 text-slate-400 hover:text-slate-200 border border-slate-700/50'
+                ? 'bg-[#007AFF] text-white font-semibold shadow-sm scale-[1.02]'
+                : 'bg-[#FFFFFF] hover:bg-[#E5E5EA] text-[#4B5563] hover:text-[#1D1D1F] border border-black/[0.06] font-medium'
             }`}
           >
             {lang}
@@ -42,4 +42,3 @@ export const LanguageSelect: React.FC = () => {
     </div>
   );
 };
-

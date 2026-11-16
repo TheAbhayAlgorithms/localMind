@@ -9,23 +9,22 @@ export const OfflineBadge: React.FC = () => {
   if (!isOfflineSafe) {
     return (
       <div
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/50 cursor-pointer animate-pulse"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FF3B30]/15 text-[#FF3B30] border border-[#FF3B30]/30 shadow-sm cursor-pointer animate-pulse"
         title={securityViolation || 'Outbound connection attempt detected!'}
       >
-        <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
-        <span>External Egress Blocked</span>
+        <ShieldAlert className="w-3.5 h-3.5 text-[#FF3B30]" />
+        <span>Egress Blocked</span>
       </div>
     );
   }
 
   return (
     <div
-      className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+      className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#34C759]/15 text-[#1D1D1F] border border-[#34C759]/30 shadow-sm"
       title="Offline Mode Active: zero external network traffic, 100% local inference"
     >
-      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-      <span>Offline mode: ON</span>
+      <ShieldCheck className="w-3.5 h-3.5 text-[#34C759]" />
+      <span>Offline Guard: <strong className="text-[#34C759] font-semibold">ON</strong></span>
     </div>
   );
 };
-

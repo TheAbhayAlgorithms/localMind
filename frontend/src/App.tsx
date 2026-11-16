@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   }, [fetchInitialData, setActiveTab]);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#090d16] text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#F5F5F7] text-[#1D1D1F] font-sans selection:bg-[#007AFF]/20 selection:text-[#007AFF]">
       <Header />
 
       {activeTab === 'editor' && <Home />}
