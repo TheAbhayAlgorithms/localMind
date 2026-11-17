@@ -7,9 +7,9 @@ set -e
 # The app itself will run strictly offline with zero external network egress.
 # ==============================================================================
 
-echo "========================================================"
+echo ""
 echo "localMind: Pre-downloading Google Gemma Models"
-echo "========================================================"
+echo ""
 
 MODELS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/models"
 mkdir -p "$MODELS_DIR"
@@ -38,8 +38,7 @@ else
 fi
 
 echo ""
-echo "========================================================"
 echo "Done! You can now disconnect Wi-Fi / turn off network."
-echo "Start the platform using: make dev   or   docker compose up"
-echo "========================================================"
+echo "Start the platform using: start localmind"
+echo ""
 

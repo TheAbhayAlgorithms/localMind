@@ -11,9 +11,8 @@ COLOR_YELLOW="\033[1;33m"
 COLOR_BLUE="\033[1;34m"
 COLOR_CYAN="\033[1;36m"
 
-echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
-echo -e "${COLOR_CYAN}           localMind Environment Diagnostics          ${COLOR_RESET}"
-echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
+echo ""
+echo -e "${COLOR_CYAN}localMind Environment Diagnostics${COLOR_RESET}"
 echo ""
 
 TOTAL_CHECKS=0
@@ -208,11 +207,10 @@ echo -e "   If the UI exhibits stale assets after updates, hard refresh (Cmd+Shi
 echo -e "   or unregister service worker in DevTools (Application > Service Workers > Unregister)."
 
 echo ""
-echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
 echo -e "Diagnostics summary: ${COLOR_GREEN}${PASSED_CHECKS} Passed${COLOR_RESET}, ${COLOR_RED}${FAILED_CHECKS} Failed${COLOR_RESET}, ${COLOR_YELLOW}${WARNING_CHECKS} Warnings${COLOR_RESET}"
 if [ "$FAILED_CHECKS" -eq 0 ]; then
-    echo -e "${COLOR_GREEN}All critical checks passed! Ready to run: make dev${COLOR_RESET}"
+    echo -e "${COLOR_GREEN}All critical checks passed! Ready to run: start localmind${COLOR_RESET}"
 else
     echo -e "${COLOR_RED}Please resolve the failed checks above before running.${COLOR_RESET}"
 fi
-echo -e "${COLOR_CYAN}======================================================${COLOR_RESET}"
+echo ""
