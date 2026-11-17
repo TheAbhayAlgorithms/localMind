@@ -1,51 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0f1d" />
-      <stop offset="100%" stop-color="#040711" />
-    </linearGradient>
-    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#818cf8" />
-      <stop offset="50%" stop-color="#6366f1" />
-      <stop offset="100%" stop-color="#4f46e5" />
-    </linearGradient>
-    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8" />
-      <stop offset="100%" stop-color="#06b6d4" />
-    </linearGradient>
-    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399" />
-      <stop offset="100%" stop-color="#10b981" />
+    <linearGradient id="localmindGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0A84FF" />
+      <stop offset="100%" stop-color="#0066CC" />
     </linearGradient>
   </defs>
 
-  <!-- Background container with rounded corners and subtle border -->
-  <rect width="128" height="128" rx="28" fill="url(#bgGrad)" />
-  <rect x="2" y="2" width="124" height="124" rx="26" fill="none" stroke="#312e81" stroke-width="2.5" opacity="0.6" />
+  <!-- Apple Squircle Background -->
+  <rect width="128" height="128" rx="28" fill="url(#localmindGrad)" />
 
-  <!-- Left Code Bracket -->
-  <path d="M42 40 L26 64 L42 88" fill="none" stroke="url(#primaryGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- Right Code Bracket -->
-  <path d="M86 40 L102 64 L86 88" fill="none" stroke="url(#primaryGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- Neural Mind Core Network -->
-  <!-- Synaptic Connectors -->
-  <line x1="64" y1="36" x2="52" y2="52" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-  <line x1="64" y1="36" x2="76" y2="52" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-  <line x1="52" y1="52" x2="64" y2="68" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-  <line x1="76" y1="52" x2="64" y2="68" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-  <line x1="64" y1="68" x2="54" y2="84" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-  <line x1="64" y1="68" x2="74" y2="84" stroke="#4338ca" stroke-width="3" stroke-linecap="round" />
-
-  <!-- Glowing Neural Nodes -->
-  <circle cx="64" cy="36" r="6" fill="url(#cyanGrad)" />
-  <circle cx="52" cy="52" r="5" fill="url(#primaryGrad)" />
-  <circle cx="76" cy="52" r="5" fill="url(#primaryGrad)" />
-  <circle cx="64" cy="68" r="7.5" fill="url(#emeraldGrad)" />
-  <circle cx="54" cy="84" r="4.5" fill="url(#cyanGrad)" />
-  <circle cx="74" cy="84" r="4.5" fill="url(#cyanGrad)" />
-
-  <!-- Core Pulse Glow Center -->
-  <circle cx="64" cy="68" r="3" fill="#ffffff" />
+  <!-- Lucide Code2 Brand Icon -->
+  <g transform="translate(24, 24) scale(3.333333)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m18 16 4-4-4-4" />
+    <path d="m6 8-4 4 4 4" />
+    <path d="m14.5 4-5 16" />
+  </g>
 </svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="localmindGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0A84FF" />
+      <stop offset="100%" stop-color="#0066CC" />
+    </linearGradient>
+  </defs>
+
+  <!-- Apple Squircle Background -->
+  <rect width="128" height="128" rx="28" fill="url(#localmindGrad)" />
+
+  <!-- Lucide Code2 Brand Icon -->
+  <g transform="translate(24, 24) scale(3.333333)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m18 16 4-4-4-4" />
+    <path d="m6 8-4 4 4 4" />
+    <path d="m14.5 4-5 16" />
+  </g>
+</svg>
