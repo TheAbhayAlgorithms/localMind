@@ -133,6 +133,9 @@ interface AppState {
   history: HistoryEntry[];
   historySearch: string;
   setHistorySearch: (q: string) => void;
+  isHistoryOpen: boolean;
+  setIsHistoryOpen: (open: boolean) => void;
+  toggleHistory: () => void;
   snippets: SnippetEntry[];
   snippetSearch: string;
   setSnippetSearch: (q: string) => void;
@@ -145,6 +148,7 @@ interface AppState {
   // Code Execution Runner
   isRunningCode: boolean;
   runResult: RunResult | null;
+  clearRunResult: () => void;
   isConsoleOpen: boolean;
   setIsConsoleOpen: (open: boolean) => void;
 
@@ -215,6 +219,9 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ historySearch });
     get().fetchHistory();
   },
+  isHistoryOpen: false,
+  setIsHistoryOpen: (isHistoryOpen) => set({ isHistoryOpen }),
+  toggleHistory: () => set((state) => ({ isHistoryOpen: !state.isHistoryOpen })),
   snippets: [],
   snippetSearch: '',
   setSnippetSearch: (snippetSearch) => {
@@ -236,7 +243,8 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   isRunningCode: false,
   runResult: null,
-  isConsoleOpen: false,
+  clearRunResult: () => set({ runResult: null }),
+  isConsoleOpen: true,
   setIsConsoleOpen: (isConsoleOpen) => set({ isConsoleOpen }),
 
   fetchInitialData: async () => {

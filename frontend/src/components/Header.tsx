@@ -6,6 +6,7 @@ import {
   Settings as SettingsIcon,
   HardDrive,
   Zap,
+  History,
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { OfflineBadge } from './OfflineBadge';
@@ -18,6 +19,9 @@ export const Header: React.FC = () => {
   const systemRamAvailable = useAppStore((state) => state.systemRamAvailable);
   const systemRamPercent = useAppStore((state) => state.systemRamPercent);
   const activeModel = useAppStore((state) => state.activeModel);
+  const isHistoryOpen = useAppStore((state) => state.isHistoryOpen);
+  const toggleHistory = useAppStore((state) => state.toggleHistory);
+  const history = useAppStore((state) => state.history);
 
   return (
     <>
@@ -117,6 +121,30 @@ export const Header: React.FC = () => {
               </div>
             </div>
           )}
+
+          {/* History Button (Opens History Drawer) */}
+          <button
+            onClick={toggleHistory}
+            aria-label="Toggle History"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition shadow-sm border ${
+              isHistoryOpen
+                ? 'bg-[#007AFF] text-white border-[#007AFF]'
+                : 'bg-[#FFFFFF] text-[#1D1D1F] hover:bg-[#F5F5F7] border-black/[0.06]'
+            }`}
+            title="Open Local Generation History"
+          >
+            <History className="w-3.5 h-3.5 text-[#007AFF]" />
+            <span className="hidden sm:inline">History</span>
+            {history.length > 0 && (
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-semibold ${
+                  isHistoryOpen ? 'bg-white/20 text-white' : 'bg-[#F5F5F7] text-[#0066CC]'
+                }`}
+              >
+                {history.length}
+              </span>
+            )}
+          </button>
 
           {/* Offline Badge */}
           <OfflineBadge />

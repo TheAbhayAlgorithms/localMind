@@ -14,6 +14,7 @@ import {
   Clock,
   Terminal,
   X,
+  History,
 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
@@ -88,6 +89,7 @@ export const MonacoEditorOffline: React.FC = () => {
   const generateCodeStream = useAppStore((state) => state.generateCodeStream);
   const runCode = useAppStore((state) => state.runCode);
   const isRunningCode = useAppStore((state) => state.isRunningCode);
+  const toggleHistory = useAppStore((state) => state.toggleHistory);
   const isConsoleOpen = useAppStore((state) => state.isConsoleOpen);
   const setIsConsoleOpen = useAppStore((state) => state.setIsConsoleOpen);
 
@@ -147,6 +149,17 @@ export const MonacoEditorOffline: React.FC = () => {
       {/* Editor Top Toolbar */}
       <div className="flex flex-wrap items-center justify-between px-4 py-2.5 bg-[#242426] border-b border-white/[0.08] gap-2">
         <div className="flex items-center gap-3">
+          {/* History Button */}
+          <button
+            onClick={toggleHistory}
+            aria-label="Toggle History"
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
+            title="Open Generation History"
+          >
+            <History className="w-3.5 h-3.5 text-[#007AFF]" />
+            <span className="hidden sm:inline">History</span>
+          </button>
+
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#34C759] animate-pulse" />
             <span className="text-xs font-semibold uppercase tracking-wider text-white">
@@ -212,20 +225,6 @@ export const MonacoEditorOffline: React.FC = () => {
           >
             <Play className={`w-3.5 h-3.5 ${isRunningCode ? 'animate-spin' : ''}`} />
             <span>{isRunningCode ? 'Running...' : 'Run'}</span>
-          </button>
-
-          {/* Console drawer toggle */}
-          <button
-            onClick={() => setIsConsoleOpen(!isConsoleOpen)}
-            aria-label="Toggle Run Console Output"
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs transition border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] ${
-              isConsoleOpen
-                ? 'bg-white/20 text-white border-white/30'
-                : 'bg-white/10 text-white/80 hover:text-white border-white/10'
-            }`}
-            title="Toggle Run Console Output"
-          >
-            <Terminal className="w-3.5 h-3.5" />
           </button>
 
           {/* Copy Button */}
