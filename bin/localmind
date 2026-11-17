@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# localMind CLI Controller for macOS Terminal
+# Commands: start, stop, restart, status, logs
+# ==============================================================================
+
+set -e
+
+LOCALMIND_ROOT="/Users/abhayrajsingh/Documents/Antigravity/localMind"
+BACKEND_DIR="$LOCALMIND_ROOT/backend"
+VENV_UVICORN="$BACKEND_DIR/.venv/bin/uvicorn"
+PID_FILE="/tmp/localmind.pid"
+LOG_FILE="/tmp/localmind_backend.log"
+OLLAMA_LOG="/tmp/localmind_ollama.log"
+PORT=8000
+HOST="127.0.0.1"
+
+# ANSI Colors for clean macOS terminal display
+BOLD="\033[1m"
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+CYAN="\033[0;36m"
+YELLOW="\033[0;33m"
+RED="\033[0;31m"
+RESET="\033[0m"
+
+is_backend_running() {
+    if [ -f "$PID_FILE" ]; then
+        local pid
+        pid=$(cat "$PID_FILE" 2>/dev/null || true)
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+            return 0
+        fi
+    fi
+    # Fallback to checking port 8000
+    if lsof -ti :$PORT >/dev/null 2>&1; then
+        return 0
+    fi
+    return 1
+}
+
+is_ollama_running() {
+    curl -s --connect-timeout 1 http://127.0.0.1:11434/api/tags >/dev/null 2>&1
+}
+
+start_ollama_if_needed() {
+    if ! is_ollama_running; then
+        if command -v ollama >/dev/null 2>&1; then
+            printf "  ${BLUE}●${RESET} Starting local Ollama engine daemon...\n"
+            nohup ollama serve > "$OLLAMA_LOG" 2>&1 &
+            # Wait up to 6 seconds for Ollama to become ready
+            local waited=0
+            while [ $waited -lt 12 ]; do
+                if is_ollama_running; then
+                    break
+                fi
+                sleep 0.5
+                waited=$((waited + 1))
+            done
+        else
+            printf "  ${YELLOW}!${RESET} Ollama not found in PATH. localMind will run in fallback mock mode.\n"
+        fi
+    fi
+}
+
+do_start() {
+    printf "\n${BOLD}${CYAN}=== Starting localMind ===${RESET}\n\n"
+
+    # 1. Start Ollama if needed
+    start_ollama_if_needed
+    if is_ollama_running; then
+        printf "  ${GREEN}✓${RESET} Ollama AI engine active on localhost:11434\n"
+    fi
+
+    # 2. Check if localMind is already running
+    if is_backend_running; then
+        local existing_pid
+        existing_pid=$(lsof -ti :$PORT | head -n 1)
+        printf "  ${YELLOW}●${RESET} localMind is already running on ${BOLD}http://127.0.0.1:%s${RESET} (PID: %s)\n" "$PORT" "$existing_pid"
+        printf "  ${GREEN}✓${RESET} Opening browser...\n\n"
+        open "http://127.0.0.1:$PORT"
+        return 0
+    fi
+
+    # 3. Check virtualenv
+    if [ ! -f "$VENV_UVICORN" ]; then
+        printf "  ${RED}✗ Error:${RESET} Virtual environment not found at %s\n" "$VENV_UVICORN"
+        printf "    Please run: cd %s && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt\n" "$BACKEND_DIR"
+        exit 1
+    fi
+
+    # 4. Start backend in background with nohup
+    printf "  ${BLUE}●${RESET} Launching localMind server...\n"
+    cd "$BACKEND_DIR"
+    nohup "$VENV_UVICORN" app.main:app --host 0.0.0.0 --port "$PORT" > "$LOG_FILE" 2>&1 &
+    local backend_pid=$!
+    echo "$backend_pid" > "$PID_FILE"
+
+    # 5. Wait for health check response
+    local attempts=0
+    local max_attempts=20
+    local is_ready=0
+
+    while [ $attempts -lt $max_attempts ]; do
+        if curl -s --connect-timeout 1 "http://127.0.0.1:$PORT/api/health" >/dev/null 2>&1; then
+            is_ready=1
+            break
+        fi
+        sleep 0.4
+        attempts=$((attempts + 1))
+    done
+
+    if [ $is_ready -eq 1 ]; then
+        printf "  ${GREEN}✓${RESET} Server online (PID: %s)\n" "$backend_pid"
+        printf "  ${GREEN}✓${RESET} Zero-Egress Offline Guard active\n"
+        printf "  ${GREEN}✓${RESET} Opening http://127.0.0.1:%s in browser...\n\n" "$PORT"
+
+        open "http://127.0.0.1:$PORT"
+
+        printf "  ${BOLD}Commands:${RESET}\n"
+        printf "    ${CYAN}stop localmind${RESET}    - Stop localMind server\n"
+        printf "    ${CYAN}status localmind${RESET}  - Check status and hardware telemetry\n\n"
+    else
+        printf "  ${RED}✗ Failed to start localMind.${RESET} Recent logs from %s:\n" "$LOG_FILE"
+        tail -n 15 "$LOG_FILE" 2>/dev/null || true
+        exit 1
+    fi
+}
+
+do_stop() {
+    printf "\n${BOLD}${CYAN}=== Stopping localMind ===${RESET}\n\n"
+
+    local stopped=0
+    local pids=""
+
+    if [ -f "$PID_FILE" ]; then
+        local file_pid
+        file_pid=$(cat "$PID_FILE" 2>/dev/null || true)
+        if [ -n "$file_pid" ]; then
+            pids="$file_pid"
+        fi
+        rm -f "$PID_FILE"
+    fi
+
+    # Also find any process listening on port 8000
+    local port_pids
+    port_pids=$(lsof -ti :$PORT 2>/dev/null || true)
+    if [ -n "$port_pids" ]; then
+        pids="$pids $port_pids"
+    fi
+
+    # Deduplicate and kill
+    for pid in $(echo "$pids" | tr ' ' '\n' | sort -u); do
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+            kill "$pid" 2>/dev/null || true
+            stopped=1
+        fi
+    done
+
+    # Give it a second to shutdown gracefully, force kill if still running
+    if [ $stopped -eq 1 ]; then
+        sleep 0.8
+        for pid in $(lsof -ti :$PORT 2>/dev/null || true); do
+            kill -9 "$pid" 2>/dev/null || true
+        done
+        printf "  ${GREEN}✓${RESET} localMind server stopped successfully (Port %s freed).\n\n" "$PORT"
+    else
+        printf "  ${YELLOW}●${RESET} localMind is not currently running.\n\n"
+    fi
+}
+
+do_status() {
+    printf "\n${BOLD}${CYAN}=== localMind Status ===${RESET}\n\n"
+
+    if is_backend_running; then
+        local pid
+        pid=$(lsof -ti :$PORT | head -n 1)
+        printf "  ● Server:        ${GREEN}RUNNING${RESET} (PID: %s)\n" "$pid"
+        printf "  ● URL:           ${BOLD}http://127.0.0.1:%s${RESET}\n" "$PORT"
+    else
+        printf "  ● Server:        ${RED}STOPPED${RESET}\n"
+    fi
+
+    if is_ollama_running; then
+        printf "  ● Ollama Engine: ${GREEN}ACTIVE${RESET} (localhost:11434)\n"
+    else
+        printf "  ● Ollama Engine: ${YELLOW}STOPPED / OFFLINE${RESET}\n"
+    fi
+
+    printf "  ● Log File:      %s\n\n" "$LOG_FILE"
+}
+
+do_logs() {
+    if [ -f "$LOG_FILE" ]; then
+        tail -f "$LOG_FILE"
+    else
+        echo "No log file found at $LOG_FILE"
+    fi
+}
+
+# Main command dispatcher
+case "${1:-start}" in
+    start|up)
+        do_start
+        ;;
+    stop|down)
+        do_stop
+        ;;
+    restart)
+        do_stop
+        sleep 1
+        do_start
+        ;;
+    status)
+        do_status
+        ;;
+    logs)
+        do_logs
+        ;;
+    help|--help|-h)
+        printf "\nUsage: localmind {start|stop|restart|status|logs}\n"
+        printf "Or:    start localmind\n"
+        printf "       stop localmind\n"
+        printf "       status localmind\n\n"
+        ;;
+    *)
+        printf "Unknown option: %s\n" "$1"
+        printf "Usage: localmind {start|stop|restart|status|logs}\n"
+        exit 1
+        ;;
+esac
