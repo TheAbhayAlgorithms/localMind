@@ -3,9 +3,7 @@
 # Navigate to project directory
 cd "$(dirname "$0")"
 
-echo "================================================="
 echo "       Starting localMind (100% Offline AI)      "
-echo "================================================="
 
 # 1. Start Ollama in the background if not already running
 if ! curl -s -m 1 http://localhost:11434/api/tags >/dev/null 2>&1; then
@@ -27,10 +25,8 @@ echo "🚀 Starting backend server on port 8000..."
 (sleep 1.5 && open "http://127.0.0.1:8000") &
 
 echo ""
-echo "================================================="
 echo "  localMind is LIVE at: http://127.0.0.1:8000    "
 echo "  Press Ctrl+C here to stop, or run ./stop.sh    "
-echo "================================================="
 echo ""
 
 # Run backend (Pressing Ctrl+C here will stop it)
