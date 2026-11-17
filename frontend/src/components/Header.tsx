@@ -18,14 +18,12 @@ export const Header: React.FC = () => {
   const systemRamTotal = useAppStore((state) => state.systemRamTotal);
   const systemRamAvailable = useAppStore((state) => state.systemRamAvailable);
   const systemRamPercent = useAppStore((state) => state.systemRamPercent);
-  const activeModel = useAppStore((state) => state.activeModel);
   const isHistoryOpen = useAppStore((state) => state.isHistoryOpen);
   const toggleHistory = useAppStore((state) => state.toggleHistory);
   const history = useAppStore((state) => state.history);
 
   return (
-    <>
-      <header className="flex items-center justify-between px-6 py-3 bg-[#FFFFFF]/90 backdrop-blur-md border-b border-black/[0.06] shadow-sm select-none z-20">
+    <header className="flex items-center justify-between px-6 py-3 bg-[#FFFFFF]/90 backdrop-blur-md border-b border-black/[0.06] shadow-sm select-none z-20">
         {/* Brand & Title (Apple clean typography) */}
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-[#007AFF] text-white shadow-sm">
@@ -160,25 +158,5 @@ export const Header: React.FC = () => {
           </button>
         </div>
       </header>
-
-      {/* Bento Subtitle Strip */}
-      <div className="bg-[#FFFFFF]/80 border-b border-black/[0.04] px-6 py-1.5 flex items-center justify-between text-[11px] text-[#4B5563] select-none">
-        <div className="flex items-center gap-2.5">
-          <span className="flex items-center gap-1.5 text-[#34C759] font-semibold">
-            <span className="w-2 h-2 rounded-full bg-[#34C759] animate-pulse" />
-            100% Offline Local Engine
-          </span>
-          <span className="text-black/15">•</span>
-          <span>Tree-Sitter AST Validated</span>
-          <span className="text-black/15">•</span>
-          <span>Zero Network Egress</span>
-        </div>
-        <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-[#86868B]">
-          <span>Apple Metal Acceleration</span>
-          <span className="text-black/15">•</span>
-          <span>Active: <strong className="text-[#1D1D1F] font-semibold">{activeModel}</strong></span>
-        </div>
-      </div>
-    </>
   );
 };

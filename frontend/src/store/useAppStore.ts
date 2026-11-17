@@ -145,6 +145,12 @@ interface AppState {
   isSettingsOpen: boolean;
   setIsSettingsOpen: (open: boolean) => void;
 
+  // Workspace Splitter
+  splitRatio: number;
+  setSplitRatio: (ratio: number) => void;
+  adjustSplitRatio: (delta: number) => void;
+  resetSplitRatio: () => void;
+
   // Code Execution Runner
   isRunningCode: boolean;
   runResult: RunResult | null;
@@ -240,6 +246,41 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
   isSettingsOpen: false,
   setIsSettingsOpen: (isSettingsOpen) => set({ isSettingsOpen }),
+
+  splitRatio: (() => {
+    try {
+      const saved = localStorage.getItem('localmind_split_ratio');
+      if (saved) {
+        const val = parseFloat(saved);
+        if (!isNaN(val) && val >= 20 && val <= 80) return val;
+      }
+    } catch (_) {}
+    return 50;
+  })(),
+  setSplitRatio: (ratio: number) => {
+    const clamped = Math.min(80, Math.max(20, Math.round(ratio)));
+    try {
+      localStorage.setItem('localmind_split_ratio', String(clamped));
+    } catch (_) {}
+    set({ splitRatio: clamped });
+    window.dispatchEvent(new Event('resize'));
+  },
+  adjustSplitRatio: (delta: number) => {
+    const current = get().splitRatio;
+    const clamped = Math.min(80, Math.max(20, Math.round(current + delta)));
+    try {
+      localStorage.setItem('localmind_split_ratio', String(clamped));
+    } catch (_) {}
+    set({ splitRatio: clamped });
+    window.dispatchEvent(new Event('resize'));
+  },
+  resetSplitRatio: () => {
+    try {
+      localStorage.setItem('localmind_split_ratio', '50');
+    } catch (_) {}
+    set({ splitRatio: 50 });
+    window.dispatchEvent(new Event('resize'));
+  },
 
   isRunningCode: false,
   runResult: null,
