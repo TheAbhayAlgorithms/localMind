@@ -151,9 +151,12 @@ export const MonacoEditorOffline: React.FC = () => {
         <div className="flex items-center gap-3">
           {/* History Button */}
           <button
-            onClick={toggleHistory}
-            aria-label="Toggle History"
-            className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
+            onClick={() => {
+              setActiveTab('history');
+              window.location.hash = 'history';
+            }}
+            aria-label="Open Generation History"
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-white/10 hover:bg-white/15 text-white/90 rounded-lg text-xs border border-white/10 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] cursor-pointer"
             title="Open Generation History"
           >
             <History className="w-3.5 h-3.5 text-[#007AFF]" />

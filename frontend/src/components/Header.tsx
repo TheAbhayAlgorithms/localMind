@@ -113,23 +113,31 @@ export const Header: React.FC = () => {
             </div>
           )}
 
-          {/* History Button (Opens History Drawer) */}
+          {/* History Button (Opens Complete History Page) */}
           <button
-            onClick={toggleHistory}
-            aria-label="Toggle History"
+            onClick={() => {
+              if (activeTab === 'history') {
+                setActiveTab('editor');
+                window.location.hash = 'editor';
+              } else {
+                setActiveTab('history');
+                window.location.hash = 'history';
+              }
+            }}
+            aria-label="Open Generation History"
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition shadow-sm border ${
-              isHistoryOpen
-                ? 'bg-[#007AFF] text-white border-[#007AFF]'
+              activeTab === 'history'
+                ? 'bg-[#007AFF] text-white border-[#007AFF] font-semibold shadow-xs'
                 : 'bg-[#FFFFFF] text-[#1D1D1F] hover:bg-[#F5F5F7] border-black/[0.06]'
             }`}
-            title="Open Local Generation History"
+            title="Open Generation History"
           >
-            <History className="w-3.5 h-3.5 text-[#007AFF]" />
+            <History className={`w-3.5 h-3.5 ${activeTab === 'history' ? 'text-white' : 'text-[#007AFF]'}`} />
             <span className="hidden sm:inline">History</span>
             {history.length > 0 && (
               <span
                 className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-semibold ${
-                  isHistoryOpen ? 'bg-white/20 text-white' : 'bg-[#F5F5F7] text-[#0066CC]'
+                  activeTab === 'history' ? 'bg-white/20 text-white' : 'bg-[#F5F5F7] text-[#0066CC]'
                 }`}
               >
                 {history.length}

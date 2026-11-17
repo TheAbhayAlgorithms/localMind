@@ -86,8 +86,8 @@ export interface RunResult {
 
 interface AppState {
   // Navigation & views
-  activeTab: 'editor' | 'models' | 'snippets';
-  setActiveTab: (tab: 'editor' | 'models' | 'snippets') => void;
+  activeTab: 'editor' | 'models' | 'snippets' | 'history';
+  setActiveTab: (tab: 'editor' | 'models' | 'snippets' | 'history') => void;
 
   // Language & Prompt
   selectedLanguage: string;

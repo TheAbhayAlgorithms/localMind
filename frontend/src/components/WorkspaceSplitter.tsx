@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 interface WorkspaceSplitterProps {
@@ -7,17 +6,15 @@ interface WorkspaceSplitterProps {
 }
 
 export const WorkspaceSplitter: React.FC<WorkspaceSplitterProps> = ({ containerRef }) => {
-  const splitRatio = useAppStore((state) => state.splitRatio);
   const setSplitRatio = useAppStore((state) => state.setSplitRatio);
-  const adjustSplitRatio = useAppStore((state) => state.adjustSplitRatio);
   const resetSplitRatio = useAppStore((state) => state.resetSplitRatio);
 
-  const [isDragging, setIsDragging] = useState(false);
+  const [isSliding, setIsSliding] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Dragging interaction logic across both windows
+  // Mouse slide drag handler
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isSliding) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -28,7 +25,7 @@ export const WorkspaceSplitter: React.FC<WorkspaceSplitterProps> = ({ containerR
     };
 
     const handleMouseUp = () => {
-      setIsDragging(false);
+      setIsSliding(false);
       window.dispatchEvent(new Event('resize'));
     };
 
@@ -44,11 +41,11 @@ export const WorkspaceSplitter: React.FC<WorkspaceSplitterProps> = ({ containerR
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging, containerRef, setSplitRatio]);
+  }, [isSliding, containerRef, setSplitRatio]);
 
-  // Touch drag support
+  // Touch slide handler (for tablets/touchscreens)
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isSliding) return;
 
     const handleTouchMove = (e: TouchEvent) => {
       if (!containerRef.current || e.touches.length === 0) return;
@@ -59,7 +56,7 @@ export const WorkspaceSplitter: React.FC<WorkspaceSplitterProps> = ({ containerR
     };
 
     const handleTouchEnd = () => {
-      setIsDragging(false);
+      setIsSliding(false);
       window.dispatchEvent(new Event('resize'));
     };
 
@@ -70,100 +67,46 @@ export const WorkspaceSplitter: React.FC<WorkspaceSplitterProps> = ({ containerR
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isDragging, containerRef, setSplitRatio]);
-
-  // Preset toggle cycle on clicking the center pill: 50/50 -> 70/30 -> 30/70 -> 50/50
-  const handleTogglePresets = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (Math.abs(splitRatio - 50) < 4) {
-      setSplitRatio(70); // Code focus
-    } else if (splitRatio >= 65) {
-      setSplitRatio(30); // Terminal focus
-    } else {
-      setSplitRatio(50); // Balanced 50/50
-    }
-  };
+  }, [isSliding, containerRef, setSplitRatio]);
 
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onMouseDown={() => setIsDragging(true)}
-      onTouchStart={() => setIsDragging(true)}
+      onMouseDown={() => setIsSliding(true)}
+      onTouchStart={() => setIsSliding(true)}
       onDoubleClick={resetSplitRatio}
-      className={`hidden lg:flex relative items-center justify-center shrink-0 w-3.5 mx-0.5 cursor-col-resize select-none transition-colors group z-20 ${
-        isDragging ? 'bg-[#007AFF]/10' : 'hover:bg-black/[0.04]'
-      }`}
-      title="Drag to resize windows, or click toggle buttons to increase/decrease width"
+      className="hidden lg:flex relative items-center justify-center shrink-0 w-2 mx-0.5 cursor-col-resize select-none group z-20 h-full"
+      title="Slide left or right to adjust window widths (Double-click to reset 50:50)"
     >
-      {/* Subtle Divider Track */}
+      {/* Slim Vertical Divider Line */}
       <div
-        className={`w-[2px] h-full transition-all duration-150 rounded-full ${
-          isDragging
-            ? 'bg-[#007AFF] shadow-[0_0_10px_rgba(0,122,255,0.7)]'
+        className={`w-[2px] h-full transition-colors duration-150 rounded-full ${
+          isSliding
+            ? 'bg-[#007AFF]'
             : isHovered
             ? 'bg-[#007AFF]/60'
             : 'bg-black/[0.08]'
         }`}
       />
 
-      {/* Floating Center Toggle Pill */}
+      {/* Sleek Minimalist Sliding Grip Bar */}
       <div
-        className={`absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 p-1 bg-[#FFFFFF] border rounded-2xl shadow-md transition-all duration-200 cursor-default ${
-          isDragging || isHovered
-            ? 'scale-105 border-[#007AFF]/60 shadow-xl'
-            : 'border-black/[0.08] opacity-85 hover:opacity-100'
+        className={`absolute top-1/2 -translate-y-1/2 w-1.5 h-10 rounded-full transition-all duration-150 flex flex-col items-center justify-center gap-1 ${
+          isSliding
+            ? 'h-12 w-2 bg-[#007AFF] shadow-[0_0_8px_rgba(0,122,255,0.6)]'
+            : isHovered
+            ? 'h-11 w-1.5 bg-[#007AFF] shadow-xs'
+            : 'bg-[#C7C7CC] group-hover:bg-[#007AFF]'
         }`}
-        onClick={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
       >
-        {/* Toggle Left Button (Shrink Code, Expand Terminal) */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            adjustSplitRatio(-10);
-          }}
-          disabled={splitRatio <= 20}
-          aria-label="Decrease Code Width / Increase Terminal Width"
-          title="Decrease Code / Increase Terminal width (-10%)"
-          className="p-1 rounded-lg text-[#4B5563] hover:text-[#007AFF] hover:bg-[#F5F5F7] disabled:opacity-25 disabled:hover:bg-transparent disabled:cursor-not-allowed transition"
-        >
-          <ChevronLeft className="w-3.5 h-3.5" />
-        </button>
-
-        {/* Center Toggle Preset & Ratio Indicator */}
-        <button
-          onClick={handleTogglePresets}
-          onDoubleClick={(e) => {
-            e.stopPropagation();
-            resetSplitRatio();
-          }}
-          aria-label="Toggle Width Presets"
-          title="Click to cycle width presets: 50:50, 70:30, 30:70. Double-click to reset."
-          className="px-1.5 py-1 text-[10px] font-mono font-bold rounded-lg text-[#1D1D1F] hover:text-[#007AFF] bg-[#F5F5F7] hover:bg-[#E5E5EA] border border-black/[0.05] transition flex flex-col items-center leading-none gap-0.5"
-        >
-          <span>{Math.round(splitRatio)}</span>
-          <span className="text-[8px] text-[#86868B] font-normal">/</span>
-          <span>{Math.round(100 - splitRatio)}</span>
-        </button>
-
-        {/* Toggle Right Button (Expand Code, Shrink Terminal) */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            adjustSplitRatio(10);
-          }}
-          disabled={splitRatio >= 80}
-          aria-label="Increase Code Width / Decrease Terminal Width"
-          title="Increase Code / Decrease Terminal width (+10%)"
-          className="p-1 rounded-lg text-[#4B5563] hover:text-[#007AFF] hover:bg-[#F5F5F7] disabled:opacity-25 disabled:hover:bg-transparent disabled:cursor-not-allowed transition"
-        >
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
+        <span className="w-0.5 h-0.5 rounded-full bg-white opacity-90" />
+        <span className="w-0.5 h-0.5 rounded-full bg-white opacity-90" />
+        <span className="w-0.5 h-0.5 rounded-full bg-white opacity-90" />
       </div>
 
-      {/* Global Transparent Overlay during drag to prevent iframe / Monaco event hijacking */}
-      {isDragging && (
+      {/* Global Transparent Drag Overlay to prevent iframe/Monaco event capturing */}
+      {isSliding && (
         <div className="fixed inset-0 z-50 cursor-col-resize select-none bg-transparent" />
       )}
     </div>

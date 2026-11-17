@@ -5,6 +5,7 @@ import { SettingsModal } from './components/SettingsModal';
 import { Home } from './pages/Home';
 import { ModelManager } from './pages/ModelManager';
 import { SavedSnippets } from './pages/SavedSnippets';
+import { HistoryPage } from './pages/HistoryPage';
 import { initOfflineSentinel } from './components/OfflineSentinel';
 
 export const App: React.FC = () => {
@@ -15,13 +16,13 @@ export const App: React.FC = () => {
   useEffect(() => {
     // Check initial hash route
     const hash = window.location.hash.replace('#', '');
-    if (hash === 'models' || hash === 'snippets' || hash === 'editor') {
+    if (hash === 'models' || hash === 'snippets' || hash === 'editor' || hash === 'history') {
       setActiveTab(hash as any);
     }
 
     const onHashChange = () => {
       const h = window.location.hash.replace('#', '');
-      if (h === 'models' || h === 'snippets' || h === 'editor') {
+      if (h === 'models' || h === 'snippets' || h === 'editor' || h === 'history') {
         setActiveTab(h as any);
       }
     };
@@ -42,6 +43,7 @@ export const App: React.FC = () => {
       {activeTab === 'editor' && <Home />}
       {activeTab === 'models' && <ModelManager />}
       {activeTab === 'snippets' && <SavedSnippets />}
+      {activeTab === 'history' && <HistoryPage />}
 
       <SettingsModal />
     </div>
