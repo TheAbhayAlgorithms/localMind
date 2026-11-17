@@ -329,7 +329,7 @@ export const MonacoEditorOffline: React.FC = () => {
         <Editor
           height="100%"
           language={getMonacoLang(detectedLanguage)}
-          value={code || '// Ready. Type your prompt below to generate clean code.\n// Zero prose, zero internet access.'}
+          value={code || '// Ready. Type your prompt below to generate clean code.'}
           onChange={(val) => setCode(val || '')}
           theme="localmind-bento-dark"
           options={{

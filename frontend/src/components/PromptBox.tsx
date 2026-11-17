@@ -84,8 +84,7 @@ export const PromptBox: React.FC = () => {
         </div>
       </form>
 
-      <div className="flex items-center justify-between mt-2.5 text-[11px] text-[#86868B]">
-        <span>Zero prose, zero network egress. Strictly executable code blocks.</span>
+      <div className="flex items-center justify-end mt-2 text-[11px] text-[#86868B]">
         <span className="hidden sm:inline">
           Press <kbd className="px-1.5 py-0.5 rounded bg-[#E5E5EA] border border-black/[0.04] text-[#1D1D1F] font-mono text-[10px]">Enter</kbd> to generate, <kbd className="px-1.5 py-0.5 rounded bg-[#E5E5EA] border border-black/[0.04] text-[#1D1D1F] font-mono text-[10px]">Shift+Enter</kbd> for newline
         </span>

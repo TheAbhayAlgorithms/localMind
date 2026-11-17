@@ -29,20 +29,13 @@ export const Header: React.FC = () => {
           <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-[#007AFF] text-white shadow-sm">
             <Code2 className="w-5 h-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-[#1D1D1F] tracking-tight">
-                localMind
-              </h1>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[#0066CC] border border-black/[0.06] uppercase tracking-wide">
-                Gemma 3
-              </span>
-            </div>
-            <div className="hidden sm:block leading-tight">
-              <span className="text-[11px] text-[#4B5563]">
-                Zero-Egress AI Code Assistant
-              </span>
-            </div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-base font-bold text-[#1D1D1F] tracking-tight">
+              localMind
+            </h1>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[#0066CC] border border-black/[0.06] uppercase tracking-wide">
+              Gemma 3
+            </span>
           </div>
         </div>
 

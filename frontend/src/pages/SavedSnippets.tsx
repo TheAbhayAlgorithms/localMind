@@ -48,7 +48,8 @@ export const SavedSnippets: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto space-y-6">
+    <div className="flex-1 w-full overflow-y-auto bg-[#F5F5F7]">
+      <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
       {/* Title & Search */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -167,6 +168,7 @@ export const SavedSnippets: React.FC = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };
