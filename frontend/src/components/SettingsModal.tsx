@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Sliders, Terminal, Check } from 'lucide-react';
+import { X, Sliders, Terminal, Check, ChevronDown } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 export const SettingsModal: React.FC = () => {
@@ -187,23 +187,26 @@ export const SettingsModal: React.FC = () => {
             <p className="text-[11px] text-[#6B7280] leading-relaxed">
               Fallback programming language and editor highlighting used when not explicitly specified in your prompt.
             </p>
-            <select
-              id="setting-default-lang"
-              value={form.default_language}
-              onChange={(e) => setForm({ ...form, default_language: e.target.value })}
-              className="w-full bg-[#FFFFFF] border border-black/[0.08] rounded-xl px-3.5 py-2 text-xs text-[#1D1D1F] font-medium focus:outline-none focus:border-[#007AFF] focus:ring-1 focus:ring-[#007AFF] transition shadow-xs cursor-pointer"
-            >
-              <option value="Auto">Auto (Model chooses best language)</option>
-              <option value="Python">Python</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="TypeScript">TypeScript</option>
-              <option value="Go">Go</option>
-              <option value="Rust">Rust</option>
-              <option value="C++">C++</option>
-              <option value="Java">Java</option>
-              <option value="SQL">SQL</option>
-              <option value="Bash">Bash</option>
-            </select>
+            <div className="relative">
+              <select
+                id="setting-default-lang"
+                value={form.default_language}
+                onChange={(e) => setForm({ ...form, default_language: e.target.value })}
+                className="w-full bg-[#FFFFFF] border border-black/[0.08] rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-[#1D1D1F] font-medium appearance-none focus:outline-none focus:border-[#007AFF] focus:ring-1 focus:ring-[#007AFF] transition shadow-xs cursor-pointer"
+              >
+                <option value="Auto">Auto (Model chooses best language)</option>
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="Go">Go</option>
+                <option value="Rust">Rust</option>
+                <option value="C++">C++</option>
+                <option value="Java">Java</option>
+                <option value="SQL">SQL</option>
+                <option value="Bash">Bash</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-[#86868B] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
 
           {/* Sandboxed Code Execution Toggle Tile */}

@@ -52,7 +52,7 @@ export const ModelManager: React.FC = () => {
         </div>
 
         {/* Bento Grid: System Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Featured Tile: 2x2 with bold purple gradient */}
           <div className="md:col-span-2 lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-[#7C3AED] to-[#6D28D9] text-white rounded-3xl p-6 shadow-sm border border-purple-500/20 flex flex-col justify-between min-h-[260px]">
             <div className="flex items-center justify-between">
@@ -183,7 +183,7 @@ export const ModelManager: React.FC = () => {
 
         {/* Low-RAM Warning if applicable */}
         {systemRamAvailable < 6.0 && (
-          <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-3xl p-4.5 text-[#92400E] shadow-xs">
+          <div className="w-full bg-[#FFFBEB] border border-[#FDE68A] rounded-3xl p-5 text-[#92400E] shadow-sm">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
               <div>
@@ -199,7 +199,7 @@ export const ModelManager: React.FC = () => {
         )}
 
         {/* Models Section: Bento Grid of Available Models */}
-        <div className="space-y-3">
+        <div className="w-full space-y-3">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#007AFF]" />
@@ -212,7 +212,7 @@ export const ModelManager: React.FC = () => {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
             {models.map((m) => {
               const isActive = m.name === activeModel;
               return (
