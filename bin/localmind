@@ -64,7 +64,7 @@ start_ollama_if_needed() {
 }
 
 do_start() {
-    printf "\n${BOLD}${CYAN}=== Starting localMind ===${RESET}\n\n"
+    printf "\n%b%bStarting localMind (100%% Offline AI)%b\n\n" "$BOLD" "$CYAN" "$RESET"
 
     # 1. Start Ollama if needed
     start_ollama_if_needed
@@ -128,7 +128,7 @@ do_start() {
 }
 
 do_stop() {
-    printf "\n${BOLD}${CYAN}=== Stopping localMind ===${RESET}\n\n"
+    printf "\n${BOLD}${CYAN}Stopping localMind${RESET}\n\n"
 
     local stopped=0
     local pids=""
@@ -170,7 +170,7 @@ do_stop() {
 }
 
 do_status() {
-    printf "\n${BOLD}${CYAN}=== localMind Status ===${RESET}\n\n"
+    printf "\n${BOLD}${CYAN}localMind Status${RESET}\n\n"
 
     if is_backend_running; then
         local pid
